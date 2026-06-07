@@ -56,8 +56,8 @@ INDEX_HTML = r"""<!DOCTYPE html>
   #dropzone p { color: #8b949e; }
   #dropzone strong { color: #c9d1d9; }
 
-  #progress-wrap { display: none; margin-bottom: 1rem; }
   #progress-wrap.active { display: block; }
+  #progress-wrap { display: none; margin-bottom: 1rem; }
   #progress-bar { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; border-radius: 3px; overflow: hidden; }
   #progress-bar::-webkit-progress-bar { background: #21262d; }
   #progress-bar::-webkit-progress-value { background: #58a6ff; transition: width .2s; }
