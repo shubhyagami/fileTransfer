@@ -33,108 +33,43 @@
 | 🔒 | **AES-256-GCM encryption** – Military-grade, authenticated encryption |
 | 🧑‍💻 | **Zero-knowledge authentication** – Passwords never leave your machine |
 | 📡 | **Peer-to-peer transfer** – No central server, no metadata leaks |
-| ⚡ | **Resumable transfers** – Network hiccup? Pick up where you left off |
-| 📁 | **Directory streaming** – Send entire folder trees in one command |
-| 🎯 | **CLI-first** – Lightweight, scriptable, no GUI bloat |
-| 🌍 | **Cross-platform** – Windows, macOS, Linux – one codebase |
+| ⚡ | **Resumable transfers** – Network hiccup? Pick up right where you left off |
 
 ---
 
-## 🧠 How It Works
+## 🕰️ Contributing – TVA Style
 
-```mermaid
-sequenceDiagram
-    participant S as Sender
-    participant C as Channel (TCP/TLS)
-    participant R as Receiver
+Welcome, Variant! You have been identified as a potential asset to the **Temporal Engineering Division** of the Time Variance Authority. By contributing to `fileTransfer`, you are helping maintain the **Sacred Timeline** of secure file sharing. All unauthorized forks, branches, or merge conflicts will be **pruned** immediately.
 
-    S->>R: 🔑 1. Diffie-Hellman key exchange (X25519)
-    R-->>S: ✅ Shared secret established
-    S->>R: 📝 2. Request: file metadata (name, size, hash)
-    R-->>S: ✅ ACK
-    Note over S,R: 3. File is split into 64KB chunks
-    loop For each chunk
-        S->>S: Encrypt chunk with AES-256-GCM
-        S->>R: 📦 Encrypted chunk + nonce + tag
-        R->>R: Decrypt & verify integrity
-        R-->>S: ✅ Chunk received
-    end
-    S->>R: ✅ 4. Final checksum (SHA-256) verification
-    R-->>S: 🎉 Transfer complete!
-```
+### 📜 The Prime Directive
 
-> **Simple summary:**  
-> 1. Handshake → Shared encryption key (even if the channel is tapped).  
-> 2. Metadata exchange → Know what you're getting.  
-> 3. Encrypted chunks → Speed + security.  
-> 4. Integrity check → Tamper-proof delivery.
+Every contribution must pass the **Temporal Integrity Check** (TIC):
 
----
+1. **No Nexus Events** – Your code must not break existing functionality. Run the test suite before submitting a pull request.
+2. **AES-256-GCM purity** – Encryption is sacred. Do not touch the cryptographic core without a thorough review from a **Senior Timekeeper**.
+3. **Time Variance Protocol** – Use `git commit` messages that clearly describe *when* and *why* a change was made. Example:  
+   `feat: add resumable transfer retry logic (Temporal Nexus Event #42)`
+4. **Minuteman Review** – Every PR must be reviewed by at least one other Timekeeper. No solo time heists.
 
-## 📦 Installation
+### 🔧 How to Contribute
 
-### Option 1: pip (recommended)
-```bash
-pip install filetransfer
-```
+1. **Report a Temporal Anomaly** – Found a bug? Open an issue with the tag `anomaly`. Include steps to reproduce, expected vs. actual behavior, and a recording of the timeline branch.
+2. **Submit a Fix** – Fork the repository, create a new branch (e.g., `fix/prune-memory-leak`), commit your changes, and open a pull request against `main`.  
+   *Warning: If your PR introduces a nexus event, it will be reset to zero.*
+3. **Request a Feature** – Use the `enhancement` label. The TVA will evaluate whether the feature is canon with the Sacred Timeline.
+4. **Write Documentation** – Good documentation keeps the timeline stable. If you see a missing docstring or unclear comment, file a `documentation` issue.
 
-### Option 2: From source
-```bash
-git clone https://github.com/shubhyagami/fileTransfer.git
-cd fileTransfer
-pip install -r requirements.txt
-python -m filetransfer --help
-```
+### 🛡️ Code of Conduct – The TVA Oath
 
-### Requirements
-- Python 3.9 or higher
-- `cryptography` library (installed automatically)
-- OpenSSL 1.1+ (system)
+- All contributors must adhere to the **TVA Non-Interference Policy**: no harassment, no discrimination, no time loops.
+- Respect the **Loom** – the CI/CD pipeline is sacred. Do not tamper with it.
+- Remember: *“We are all variants. The only difference is when we show up.”*
+
+### 🚀 First Contribution? Here’s Your Reset Charge
+
+We welcome first-time time travelers. Look for issues labeled `good-first-prune` (beginner-friendly) or `help-wanted` (needs temporal assistance). If you get stuck, ask in the **TVA Temporal Helpdesk** (GitHub Discussions).
 
 ---
 
-## 🎮 Quick Start
-
-**On the receiving machine:**
-```bash
-filetransfer receive --port 9000
-```
-
-**On the sending machine:**
-```bash
-filetransfer send --file secret.pdf --host 192.168.1.42 --port 9000
-```
-
-You'll be prompted for a one-time password — enter the same phrase on both ends. That's it. Your file travels through an encrypted tunnel.
-
----
-
-## 💡 Did You Know?
-
-- 🔐 The AES-256-GCM algorithm used by `fileTransfer` is the same encryption standard used by the U.S. government for **Top Secret** documents.
-- 📡 Traditional FTP transfers **everything in plaintext** — including your password. `fileTransfer` encrypts **every byte**, even the handshake.
-- 🧩 The chunk size (64KB) was chosen after benchmarks showing optimal throughput on consumer-grade internet connections (both Wi-Fi and Ethernet).
-- ⏱️ Resumable transfers work by storing a lightweight `.ftcheckpoint` file — you can resume after a power outage without losing a single byte.
-- 🌍 The project was born during a hackathon where the team realized how hard it is to securely send a file to a friend without using a cloud service. **No more "upload to Drive and hope for the best".**
-
----
-
-## 📅 Last Updated
-
-**2026-07-25** – Changelog:  
-- Added support for directory streaming (`--recursive` flag).  
-- Improved memory usage for large files (>10GB).  
-- Switched to `cryptography` 42.0 for post-quantum readiness.
-
----
-
-## 🤝 Contributing
-
-Found a bug? Want to add a feature?  
-Open an issue or pull request at [github.com/shubhyagami/fileTransfer](https://github.com/shubhyagami/fileTransfer).  
-All contributions are welcome — and yes, we 💖 emoji-laden commit messages.
-
----
-
-> ⚡ **"Send files like a ghost — fast, invisible, and leaving no trace."**  
-> — The fileTransfer team
+**Ready to join the Time Force?** Fork, clone, code, and open your PR. The timeline of secure file transfer depends on you.  
+*For All Time. Always.*
