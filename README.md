@@ -31,68 +31,56 @@
 ## 🚀 Features
 
 | Icon | Feature |
-|------|---------|
-| 🔒 | **AES-256-GCM encryption** – Military-grade, authenticated encryption |
-| 🧑‍💻 | **Zero-knowledge authentication** – Passwords never leave your machine |
-| 📡 | **Peer-to-peer transfer** – No central server, no metadata leaks |
-| ⚡ | **Resumable transfers** – Network hiccup? Pick up right where you left off |
+|------|-----
 
 ---
 
-## ⚡ Quick Start
+## ⏳ Contributing (TVA Edition)
 
-Get up and running in under 60 seconds. No cloud accounts, no API keys, no nonsense.
+Welcome, Variant! You’ve stumbled upon the **Sacred Timeline of fileTransfer**. Before you submit a pull request, the **Time Variance Authority** requires you to follow these protocols:
 
-### Installation
+### 📜 The Sacred Rules
 
-```bash
-# Clone the repository
-git clone https://github.com/shubhyagami/fileTransfer.git
-cd fileTransfer
+1. **File a Nexus Event**  
+   Before coding, open an issue describing the anomaly you wish to fix or feature you want to add. This prevents timeline branches from diverging.
 
-# Create a virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. **Reset Your Timeline**  
+   Fork the repo and create a branch with a temporal name:  
+   `git checkout -b fix/chrono-bug-1234` or `feat/quantum-upload`.
 
-# Install dependencies
-pip install -r requirements.txt
-```
+3. **Prune with Purpose**  
+   Keep commits clean and atomic. No temporal dust — each commit should tell a story that Mobius M. Mobius would approve of.
 
-### Sending a File
+4. **Minutemen Code Style**  
+   - Use `black` (the official TVA formatter) to lint your code.  
+   - Write docstrings that even a Loki variant could understand.  
+   - Follow the existing encryption standards — we don’t need another apocalypse.
 
-```bash
-# On the sender's machine
-python filetransfer.py send --file secret_plans.pdf --port 5050
+5. **Test at the End of Time**  
+   Add or update tests in the `tests/` folder. Run them with `pytest` — if the timeline breaks, He Who Remains will notice.
 
-# Output:
-# ╔══════════════════════════════════════════════════╗
-# ║  🔒 Encrypted channel established               ║
-# ║  📡 Listening on 
-```
+6. **Submit Your Variant Pull Request**  
+   When ready, open a PR against `main`. In the description, reference the issue and include a *temporal signature*:  
+   ```
+   This PR has been approved by the TVA Temporal Engineer.
+   Timeline integrity: maintained.
+   ```
 
----
+### ⚠️ Pruning Notice
 
-## 💡 Pro Tips
-
-| Tip | Description |
-|-----|-------------|
-| 🧩 **Resume broken transfers** | Use `--resume` when the connection drops. The client automatically re‑requests missing chunks — no data wasted. |
-| 📦 **Send entire folders** | Combine with `tar` on the fly: `tar czf - ./my_folder \| python filetransfer.py send --stream` — the receiver extracts with `tar xzf -`. |
-| 🔐 **Automate with password files** | Pass a password file via `--password-file` instead of typing it interactively. Handy for cron jobs or CI/CD pipelines. |
+Any PR that violates the Sacred Timeline will be pruned (closed) by the Time-Keepers. Persistent violators will be reset and sent to the Void. (We’re nice about it, we promise.)
 
 ---
 
-## 📅 Changelog
+### 🔗 Join the TVA Engineering Corps
 
-### [1.2.0] - 2026-07-31
+Want to help shape the future of secure file transfers?  
+- Join our [Discord](https://discord.gg/tva-engineering)  
+- Read our [Code of Conduct](CODE_OF_CONDUCT.md)  
+- Check out the [Issues](https://github.com/shubhyagami/fileTransfer/issues) for approved missions
 
-#### Added
-- **Pro Tips section** in README with practical usage hints.
-- **Automatic port binding fallback**: if the requested port is busy, the tool now tries the next available port and informs you.
-
-#### Fixed
-- Resolved a rare race condition during concurrent chunk requests on high‑latency networks.
+**All contributors must sign the Contributor License Agreement (CLA) — because even a Variant needs a contract.**
 
 ---
 
-*Your privacy is not a feature — it's the default. Stay encrypted.*
+> *"For all time. Always."* — The TVA
