@@ -3,9 +3,9 @@
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)]()
+[![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)]()
 
-**fileTransfer** is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated, peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
+**fileTransfer** is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
 
 ## Features
 
@@ -31,7 +31,7 @@ Generate your local identity keys:
 filetransfer init --identity alice
 ```
 
-This creates a pair of Ed25519 keys stored locally in `~/.filetransfer/keys/`. Share your public key with trusted peers, and keep your private key safe.
+This creates a pair of Ed25519 keys stored locally in `~/.filetransfer/keys/`. Share your public key with trusted peers and keep your private key safe.
 
 ### Receiving a File
 
@@ -47,16 +47,16 @@ filetransfer send --file ./document.pdf \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-After a successful transfer, the tool performs an automatic SHA-3-512 hash verification:
+Upon a successful transfer, the tool performs an automatic SHA-3-512 hash verification:
 
-```
+```text
 ✓ Transfer complete | Integrity verified | 42.7 MB in 3.2s (13.3 MB/s)
 ```
 
 ## Advanced Usage
 
 ### Large File Optimization
-For files exceeding 1 GB, tune your chunk size to reduce overhead:
+For files exceeding 1 GB, tune the chunk size to reduce overhead:
 
 ```bash
 filetransfer send --file massive_dataset.zip \
@@ -65,7 +65,7 @@ filetransfer send --file massive_dataset.zip \
 ```
 
 ### Resuming Interrupted Transfers
-If a transfer drops, you can resume it gracefully using the session file:
+If a transfer drops, you can resume it gracefully using the saved session file:
 
 ```bash
 filetransfer resume --session ~/.filetransfer/sessions/abc123.ftsession
@@ -83,24 +83,11 @@ filetransfer send --file report.pdf \
 *Note: Relay mode never decrypts your payload. It simply forwards encrypted packets, keeping your data opaque to the relay server.*
 
 ### Compliance Auditing
-Log all transfer sessions for compliance and auditing:
+Log all transfer sessions for compliance and auditing purposes:
 
 ```bash
 filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 ```
-
-## Contributing
-
-Contributions are welcome. Before opening a pull request, please follow these steps:
-
-1. **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
-2. **Fork and Branch:** Create a branch with a clear, descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
-3. **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain the existing encryption standards.
-4. **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
-   ```bash
-   pytest tests/ --cov=filetransfer --cov-report=term-missing
-   ```
-5. **Submit a PR:** Provide a clear description of the changes and link the original issue.
 
 ## Project Metrics
 
@@ -132,6 +119,19 @@ Contributions are welcome. Before opening a pull request, please follow these st
 - Default chunk size increased from 4 MB → 8 MB for improved throughput on high-latency links.
 - Read receipts now include checksum metadata for real-time integrity streaming.
 - Logging verbosity in development mode now prints trace IDs compatible with OpenTelemetry.
+
+## Contributing
+
+Contributions are welcome. Before opening a pull request, please follow these steps:
+
+1. **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
+2. **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
+3. **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain the existing encryption standards.
+4. **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
+   ```bash
+   pytest tests/ --cov=filetransfer --cov-report=term-missing
+   ```
+5. **Submit a PR:** Provide a clear description of the changes and link the original issue.
 
 ## License
 
