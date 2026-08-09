@@ -2,8 +2,9 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
-[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-passing-success?style=flat-square)]()
 [![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)]()
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
 **fileTransfer** is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
 
