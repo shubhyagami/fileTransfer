@@ -48,7 +48,7 @@ filetransfer send --file ./document.pdf \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-Upon a successful transfer, the tool performs an automatic SHA-3-512 hash verification:
+Upon successful transfer, the tool performs an automatic SHA-3-512 hash verification:
 
 ```text
 ✓ Transfer complete | Integrity verified | 42.7 MB in 3.2s (13.3 MB/s)
@@ -136,4 +136,4 @@ Contributions are welcome. Before opening a pull request, please follow these st
 
 ## License
 
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for full text.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for full text.
