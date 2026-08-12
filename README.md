@@ -6,7 +6,7 @@
 [![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
-**fileTransfer** is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
+`fileTransfer` is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
 
 ## Features
 
@@ -32,7 +32,7 @@ Generate your local identity keys:
 filetransfer init --identity alice
 ```
 
-This creates a pair of Ed25519 keys stored locally in `~/.filetransfer/keys/`. Share your public key with trusted peers and keep your private key safe.
+This creates a pair of Ed25519 keys stored locally in `~/.filetransfer/keys/`. Share your public key with trusted peers, and keep your private key safe.
 
 ### Receiving a File
 
@@ -57,15 +57,17 @@ Upon successful transfer, the tool performs an automatic SHA-3-512 hash verifica
 ## Advanced Usage
 
 ### Large File Optimization
+
 For files exceeding 1 GB, tune the chunk size to reduce overhead:
 
 ```bash
 filetransfer send --file massive_dataset.zip \
   --to bob.example.com:4242 \
-  --chunk-size 16777216  # 16 MB chunks
+  --chunk-size 16777216
 ```
 
 ### Resuming Interrupted Transfers
+
 If a transfer drops, you can resume it gracefully using the saved session file:
 
 ```bash
@@ -73,6 +75,7 @@ filetransfer resume --session ~/.filetransfer/sessions/abc123.ftsession
 ```
 
 ### NAT Traversal via Relay Mode
+
 If direct P2P connectivity fails due to NAT restrictions, enable relay routing:
 
 ```bash
@@ -84,6 +87,7 @@ filetransfer send --file report.pdf \
 *Note: Relay mode never decrypts your payload. It simply forwards encrypted packets, keeping your data opaque to the relay server.*
 
 ### Compliance Auditing
+
 Log all transfer sessions for compliance and auditing purposes:
 
 ```bash
@@ -98,7 +102,6 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 | Lines of Python | 3,187 |
 | Test coverage | 94.6% |
 | Latest release | v2.1.0 |
-| Translations | EN, FR, DE, JP |
 | Supported platforms | Linux · macOS · Windows · WSL |
 | Cipher suite | AES-256-GCM · Ed25519 · SHA-3-512 |
 
@@ -114,12 +117,10 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 **Added**
 - Native support for SHA-3 integrity verification alongside existing SHA-256 hashing.
 - New `filetransfer relay list` subcommand to discover the fastest relay nodes automatically.
-- French (`fr-FR`) localization fully integrated.
 
 **Changed**
 - Default chunk size increased from 4 MB → 8 MB for improved throughput on high-latency links.
 - Read receipts now include checksum metadata for real-time integrity streaming.
-- Logging verbosity in development mode now prints trace IDs compatible with OpenTelemetry.
 
 ## Contributing
 
