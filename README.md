@@ -1,20 +1,22 @@
 # fileTransfer
 
-[![Python Version](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)
-[![Code Style](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
+[![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)
+[![Code Style: black](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
 [![Tests](https://img.shields.io/badge/tests-passing-success?style=flat-square)]()
 [![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)]()
-[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
 
-`fileTransfer` is a secure, end-to-end encrypted file transfer utility written in Python. It enables direct, authenticated peer-to-peer file sharing without relying on cloud storage or third-party intermediaries.
+`fileTransfer` is a secure, peer-to-peer file transfer utility written in Python. It enables direct, authenticated file sharing between users without relying on cloud storage or third-party intermediaries. All payloads are secured with end-to-end encryption.
 
 ## Features
 
 - **End-to-End Encryption:** AES-256-GCM encryption ensures only intended recipients can read transferred files.
-- **Peer-to-Peer Architecture:** Direct connections eliminate cloud dependencies and maintain local data ownership.
+- **Peer-to-Peer Architecture:** Direct connections eliminate cloud dependencies and preserve local data ownership.
 - **High-Speed Transfers:** An optimized chunking algorithm achieves gigabit speeds on standard network connections.
 - **Identity Verification:** Mutual authentication via Ed25519 key exchange prevents man-in-the-middle attacks.
-- **Progress Streaming:** Real-time transfer metrics with ETA, throughput, and integrity checks.
+- **Resumable Transfers:** Automatically resume interrupted transfers from saved session files.
+- **Progress Reporting:** Real-time transfer metrics with ETA, throughput, and integrity checks.
 - **Plugin System:** Extend functionality with custom hooks for pre- and post-transfer operations.
 - **Cross-Platform:** Runs natively on Linux, macOS, Windows, and WSL environments.
 
@@ -32,7 +34,7 @@ Generate your local identity keys:
 filetransfer init --identity alice
 ```
 
-This creates a pair of Ed25519 keys stored locally in `~/.filetransfer/keys/`. Share your public key with trusted peers, and keep your private key safe.
+This creates an Ed25519 key pair in `~/.filetransfer/keys/`. Share your public key with trusted peers and keep your private key safe.
 
 ### Receiving a File
 
@@ -48,7 +50,7 @@ filetransfer send --file ./document.pdf \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-Upon successful transfer, the tool performs an automatic SHA-3-512 hash verification:
+Upon a successful transfer, the tool performs an automatic SHA-3-512 hash verification:
 
 ```text
 ✓ Transfer complete | Integrity verified | 42.7 MB in 3.2s (13.3 MB/s)
@@ -68,7 +70,7 @@ filetransfer send --file massive_dataset.zip \
 
 ### Resuming Interrupted Transfers
 
-If a transfer drops, you can resume it gracefully using the saved session file:
+If a connection drops, resume the transfer gracefully using the saved session file:
 
 ```bash
 filetransfer resume --session ~/.filetransfer/sessions/abc123.ftsession
@@ -88,7 +90,7 @@ filetransfer send --file report.pdf \
 
 ### Compliance Auditing
 
-Log all transfer sessions for compliance and auditing purposes:
+Log transfer sessions for compliance and auditing purposes:
 
 ```bash
 filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
@@ -96,23 +98,18 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 
 ## Project Metrics
 
-| Metric | Value |
-|--------|-------|
-| Repository size | 4.2 MB |
-| Lines of Python | 3,187 |
-| Test coverage | 94.6% |
-| Latest release | v2.1.0 |
-| Supported platforms | Linux · macOS · Windows · WSL |
-| Cipher suite | AES-256-GCM · Ed25519 · SHA-3-512 |
+| Metric             | Value                                  |
+|--------------------|----------------------------------------|
+| Repository size    | 4.2 MB                                 |
+| Lines of Python    | 3,187                                  |
+| Test coverage      | 94.6%                                  |
+| Latest release     | v2.1.0                                 |
+| Supported platforms| Linux · macOS · Windows · WSL          |
+| Cipher suite       | AES-256-GCM · Ed25519 · SHA-3-512      |
 
 ## Changelog
 
 ### [v2.1.0] — 2026-08-05
-
-**Fixed**
-- Resolved a race condition during simultaneous multi-peer transfers that caused session manifests to desynchronize.
-- Patched an edge case where Ed25519 key rotation at runtime dropped the active handoff connection.
-- Fixed Windows path normalization issue for files containing Unicode characters.
 
 **Added**
 - Native support for SHA-3 integrity verification alongside existing SHA-256 hashing.
@@ -122,13 +119,18 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 - Default chunk size increased from 4 MB → 8 MB for improved throughput on high-latency links.
 - Read receipts now include checksum metadata for real-time integrity streaming.
 
+**Fixed**
+- Resolved a race condition during simultaneous multi-peer transfers that caused session manifests to desynchronize.
+- Patched an edge case where runtime Ed25519 key rotation dropped the active handoff connection.
+- Fixed Windows path normalization issue for files containing Unicode characters.
+
 ## Contributing
 
 Contributions are welcome. Before opening a pull request, please follow these steps:
 
 1. **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
 2. **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
-3. **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain the existing encryption standards.
+3. **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain existing encryption standards.
 4. **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
    ```bash
    pytest tests/ --cov=filetransfer --cov-report=term-missing
