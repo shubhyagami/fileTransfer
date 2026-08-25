@@ -7,26 +7,30 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
 
-`fileTransfer` is a secure, peer-to-peer file transfer utility written in Python. It enables direct, authenticated file sharing between users without relying on cloud storage or third-party intermediaries. All payloads are secured with end-to-end encryption.
+## Secure File Transfer Utility
 
-## Features
+fileTransfer is a peer-to-peer (P2P) file transfer tool that enables direct, authenticated file sharing between users without relying on cloud storage or third-party intermediaries. It provides end-to-end encryption to ensure only intended recipients can read transferred files.
 
-- **End-to-End Encryption:** AES-256-GCM encryption ensures only intended recipients can read transferred files.
-- **Peer-to-Peer Architecture:** Direct connections eliminate cloud dependencies and preserve local data ownership.
-- **High-Speed Transfers:** An optimized chunking algorithm achieves gigabit speeds on standard network connections.
-- **Identity Verification:** Mutual authentication via Ed25519 key exchange prevents man-in-the-middle attacks.
-- **Resumable Transfers:** Automatically resume interrupted transfers from saved session files.
-- **Progress Reporting:** Real-time transfer metrics with ETA, throughput, and integrity checks.
-- **Plugin System:** Extend functionality with custom hooks for pre- and post-transfer operations.
-- **Cross-Platform:** Runs natively on Linux, macOS, Windows, and WSL environments.
+### Features
+
+*   **End-to-End Encryption:** AES-256-GCM encryption ensures only intended recipients can read transferred files.
+*   **Peer-to-Peer Architecture:** Direct connections eliminate cloud dependencies and preserve local data ownership.
+*   **High-Speed Transfers:** An optimized chunking algorithm achieves gigabit speeds on standard network connections.
+*   **Identity Verification:** Mutual authentication via Ed25519 key exchange prevents man-in-the-middle attacks.
+*   **Resumable Transfers:** Automatically resume interrupted transfers from saved session files.
+*   **Progress Reporting:** Real-time transfer metrics with ETA, throughput, and integrity checks.
+*   **Plugin System:** Extend functionality with custom hooks for pre- and post-transfer operations.
+*   **Cross-Platform:** Runs natively on Linux, macOS, Windows, and WSL environments.
 
 ## Getting Started
 
-Install the package from PyPI:
+### Install fileTransfer
 
 ```bash
 pip install filetransfer
 ```
+
+### Initialize Local Identity
 
 Generate your local identity keys:
 
@@ -36,13 +40,7 @@ filetransfer init --identity alice
 
 This creates an Ed25519 key pair in `~/.filetransfer/keys/`. Share your public key with trusted peers and keep your private key safe.
 
-### Receiving a File
-
-```bash
-filetransfer receive --port 4242 --output ./downloads/
-```
-
-### Sending a File
+### Send a File
 
 ```bash
 filetransfer send --file ./document.pdf \
@@ -50,10 +48,10 @@ filetransfer send --file ./document.pdf \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-Upon a successful transfer, the tool performs an automatic SHA-3-512 hash verification:
+### Receive a File
 
-```text
-✓ Transfer complete | Integrity verified | 42.7 MB in 3.2s (13.3 MB/s)
+```bash
+filetransfer receive --port 4242 --output ./downloads/
 ```
 
 ## Advanced Usage
@@ -86,7 +84,7 @@ filetransfer send --file report.pdf \
   --relay wss://relay.filetransfer.io
 ```
 
-*Note: Relay mode never decrypts your payload. It simply forwards encrypted packets, keeping your data opaque to the relay server.*
+*   Note: Relay mode never decrypts your payload. It simply forwards encrypted packets, keeping your data opaque to the relay server.
 
 ### Compliance Auditing
 
@@ -112,30 +110,34 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 ### [v2.1.0] — 2026-08-05
 
 **Added**
-- Native support for SHA-3 integrity verification alongside existing SHA-256 hashing.
-- New `filetransfer relay list` subcommand to discover the fastest relay nodes automatically.
+
+-   Native support for SHA-3 integrity verification alongside existing SHA-256 hashing.
+-   New `filetransfer relay list` subcommand to discover the fastest relay nodes automatically.
 
 **Changed**
-- Default chunk size increased from 4 MB → 8 MB for improved throughput on high-latency links.
-- Read receipts now include checksum metadata for real-time integrity streaming.
+
+-   Default chunk size increased from 4 MB → 8 MB for improved throughput on high-latency links.
+-   Read receipts now include checksum metadata for real-time integrity streaming.
 
 **Fixed**
-- Resolved a race condition during simultaneous multi-peer transfers that caused session manifests to desynchronize.
-- Patched an edge case where runtime Ed25519 key rotation dropped the active handoff connection.
-- Fixed Windows path normalization issue for files containing Unicode characters.
+
+-   Resolved a race condition during simultaneous multi-peer transfers that caused session manifests to desynchronize.
+-   Patched an edge case where runtime Ed25519 key rotation dropped the active handoff connection.
+-   Fixed Windows path normalization issue for files containing Unicode characters.
 
 ## Contributing
 
 Contributions are welcome. Before opening a pull request, please follow these steps:
 
-1. **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
-2. **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
-3. **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain existing encryption standards.
-4. **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
-   ```bash
-   pytest tests/ --cov=filetransfer --cov-report=term-missing
-   ```
-5. **Submit a PR:** Provide a clear description of the changes and link the original issue.
+1.  **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
+2.  **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
+3.  **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain existing encryption standards.
+4.  **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
+
+    ```bash
+    pytest tests/ --cov=filetransfer --cov-report=term-missing
+    ```
+5.  **Submit a PR:** Provide a clear description of the changes and link the original issue.
 
 ## License
 
