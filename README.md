@@ -32,23 +32,27 @@ pip install filetransfer
 
 ### Initialize Local Identity
 
-Generate your local identity keys:
+Generate your local identity keys with:
 
 ```bash
-filetransfer init --identity alice
+filetransfer init --identity <your_username>
 ```
 
 This creates an Ed25519 key pair in `~/.filetransfer/keys/`. Share your public key with trusted peers and keep your private key safe.
 
 ### Send a File
 
+Use the following command to send a file securely:
+
 ```bash
 filetransfer send --file ./document.pdf \
-  --to bob.example.com:4242 \
-  --key ~/.filetransfer/keys/bob_public.ed25519
+  --to <recipient_username>@<recipient_ip>:4242 \
+  --key ~/.filetransfer/keys/<recipient_username>_public.ed25519
 ```
 
 ### Receive a File
+
+Start receiving files with:
 
 ```bash
 filetransfer receive --port 4242 --output ./downloads/
@@ -71,7 +75,7 @@ filetransfer send --file massive_dataset.zip \
 If a connection drops, resume the transfer gracefully using the saved session file:
 
 ```bash
-filetransfer resume --session ~/.filetransfer/sessions/abc123.ftsession
+filetransfer resume --session ~/.filetransfer/sessions/<session_id>.ftsession
 ```
 
 ### NAT Traversal via Relay Mode
@@ -94,16 +98,30 @@ Log transfer sessions for compliance and auditing purposes:
 filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 ```
 
+## Contributing
+
+Contributions are welcome. Before opening a pull request, please follow these steps:
+
+1.  **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
+2.  **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
+3.  **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain existing encryption standards.
+4.  **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
+
+    ```bash
+    pytest tests/ --cov=filetransfer --cov-report=term-missing
+    ```
+5.  **Submit a PR:** Provide a clear description of the changes and link the original issue.
+
 ## Project Metrics
 
-| Metric             | Value                                  |
-|--------------------|----------------------------------------|
-| Repository size    | 4.2 MB                                 |
-| Lines of Python    | 3,187                                  |
-| Test coverage      | 94.6%                                  |
-| Latest release     | v2.1.0                                 |
-| Supported platforms| Linux · macOS · Windows · WSL          |
-| Cipher suite       | AES-256-GCM · Ed25519 · SHA-3-512      |
+| Metric                  | Value                                  |
+|-------------------------|----------------------------------------|
+| Repository size         | 4.2 MB                                 |
+| Lines of Python         | 3,187                                  |
+| Test coverage           | 94.6%                                   |
+| Latest release          | v2.1.0                                  |
+| Supported platforms     | Linux · macOS · Windows · WSL          |
+| Cipher suite            | AES-256-GCM · Ed25519 · SHA-3-512      |
 
 ## Changelog
 
@@ -124,20 +142,6 @@ filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
 -   Resolved a race condition during simultaneous multi-peer transfers that caused session manifests to desynchronize.
 -   Patched an edge case where runtime Ed25519 key rotation dropped the active handoff connection.
 -   Fixed Windows path normalization issue for files containing Unicode characters.
-
-## Contributing
-
-Contributions are welcome. Before opening a pull request, please follow these steps:
-
-1.  **Open an Issue:** Describe the bug or feature you want to work on to prevent overlapping work.
-2.  **Fork and Branch:** Create a branch with a descriptive name (e.g., `fix/session-sync` or `feat/relay-list`).
-3.  **Follow Code Standards:** Use `black` for formatting. Write clear docstrings and maintain existing encryption standards.
-4.  **Run Tests:** Ensure all tests pass and coverage remains above 90% before submitting a PR:
-
-    ```bash
-    pytest tests/ --cov=filetransfer --cov-report=term-missing
-    ```
-5.  **Submit a PR:** Provide a clear description of the changes and link the original issue.
 
 ## License
 
