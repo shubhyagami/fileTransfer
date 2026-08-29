@@ -9,13 +9,13 @@ A peer‑to‑peer file‑transfer utility that moves data directly between trus
 [![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)  
 [![Code Style: black](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)  
 [![Tests](https://img.shields.io/badge/tests-passing-success?style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)  
-[![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)  
+[![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)](https://github.com/shubhyagumi/filetransfer/actions)  
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)  
-[![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
+[![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)  
 
 ---
 
-## Overview
+## About
 
 `filetransfer` is a lightweight command‑line tool written in Python that enables direct, encrypted transfers between two parties. It uses AES‑256‑GCM for confidentiality, Ed25519 for mutual authentication, and supports resumable sessions, progress reporting, and a simple plugin system.
 
@@ -34,23 +34,23 @@ A peer‑to‑peer file‑transfer utility that moves data directly between trus
 
 ---
 
-## Getting Started
-
-### Installation
+## Installation
 
 ```bash
 pip install filetransfer
 ```
 
-### Initialize Your Identity
+---
 
-Generate an Ed25519 key pair for your local identity:
+## Quick Start
+
+### Generate Your Identity
 
 ```bash
 filetransfer init --identity <your_username>
 ```
 
-Keys are stored in `~/.filetransfer/keys/`. Keep the private key secure and share the public key with peers.
+Your private key is stored in `~/.filetransfer/keys/`. Keep it secure and share the public key with peers.
 
 ### Send a File
 
@@ -82,59 +82,34 @@ filetransfer receive --port 4242 --output ./downloads/
 
 ## Advanced Usage
 
-### Large File Optimization
-
-For files larger than 1 GB, you can adjust the chunk size to improve throughput:
-
-```bash
-filetransfer send --file massive_dataset.zip \
-  --to bob.example.com:4242 \
-  --chunk-size 16777216
-```
-
-### Resuming Interrupted Transfers
-
-If a connection drops, resume using the saved session manifest:
-
-```bash
-filetransfer resume --session ~/.filetransfer/sessions/<session_id>.ftsession
-```
-
-### NAT Traversal (Relay Mode)
-
-When direct P2P connectivity fails (e.g., behind restrictive NATs), enable relay routing:
-
-```bash
-filetransfer send --file report.pdf \
-  --to bob:4242 \
-  --relay wss://relay.filetransfer.io
-```
-
-*Relay mode forwards encrypted packets only; the relay never decrypts the payload.*
-
-### Auditing and Logging
-
-Log each session for compliance or audit trails:
-
-```bash
-filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
-```
+- **Chunk Size Tuning** – For large files, adjust chunk size (e.g., `--chunk-size 16777216`).  
+- **Resuming Transfers** – Use a saved session manifest to resume after a drop:  
+  ```bash
+  filetransfer resume --session ~/.filetransfer/sessions/<session_id>.ftsession
+  ```  
+- **NAT Traversal (Relay Mode)** – When direct P2P fails, route through a relay:  
+  ```bash
+  filetransfer send --file report.pdf \
+    --to bob:4242 \
+    --relay wss://relay.filetransfer.io
+  ```  
+  *The relay forwards encrypted packets only; it never decrypts the payload.*  
+- **Auditing** – Log each session for compliance:  
+  ```bash
+  filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
+  ```
 
 ---
 
 ## Contributing
 
-Contributions are welcome. To keep the workflow consistent:
-
 1. **Open an Issue** – Describe the bug or feature before starting work.  
 2. **Fork and Branch** – Use a descriptive branch name (e.g., `fix/session-sync` or `feat/relay-discovery`).  
 3. **Follow Code Standards** – Run `black` to format and adhere to existing style.  
-4. **Run Tests** – Ensure all tests pass and coverage stays above 90%:
-
+4. **Run Tests** – Ensure all tests pass and coverage stays above 90%:  
    ```bash
    pytest tests/ --cov=filetransfer --cov-report=term-missing
-   ```
-
+   ```  
 5. **Submit a Pull Request** – Include a clear description of changes and reference the original issue.
 
 ---
