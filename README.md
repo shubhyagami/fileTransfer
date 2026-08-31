@@ -1,6 +1,6 @@
 # fileTransfer
 
-A lightweight, peer‑to‑peer command‑line utility for end‑to‑end encrypted file transfers. All data is encrypted with AES‑256‑GCM, authenticated with Ed25519, and designed for trusted environments that require no cloud intermediate.
+A lightweight, peer‑to‑peer command‑line tool for end‑to‑end encrypted file transfers. All data is encrypted with AES‑256‑GCM and authenticated with Ed25519, making it suitable for trusted environments that require no cloud intermediary.
 
 ---  
 
@@ -17,7 +17,7 @@ A lightweight, peer‑to‑peer command‑line utility for end‑to‑end encryp
 
 ## About  
 
-`filetransfer` is a small, pure‑Python CLI that enables direct, encrypted transfers between two parties. It uses AES‑256‑GCM for confidentiality, Ed25519 for mutual authentication, and supports resumable sessions, progress reporting, and a simple plugin system.
+`filetransfer` is a pure‑Python CLI that enables direct, encrypted transfers between two parties. It uses AES‑256‑GCM for confidentiality, Ed25519 for mutual authentication, and supports resumable sessions, progress reporting, and a simple plugin system.
 
 ---  
 
@@ -26,7 +26,7 @@ A lightweight, peer‑to‑peer command‑line utility for end‑to‑end encryp
 - **End‑to‑End Encryption** – AES‑256‑GCM with per‑transfer keys.  
 - **True Peer‑to‑Peer** – No cloud intermediary; connections are established directly.  
 - **High‑Performance Chunking** – Optimized chunk sizes for typical networks.  
-- **Mutual Authentication** – Ed25519 keys prevent man‑in‑the‑middle attacks.  
+- **Mutual Authentication** – Ed25519 keys protect against man‑in‑the‑middle attacks.  
 - **Resumable Transfers** – Pause and resume after interruptions.  
 - **Live Progress Reporting** – ETA, throughput, and integrity checks.  
 - **Plugin Hooks** – Run custom pre‑ and post‑transfer logic.  
@@ -50,7 +50,7 @@ pip install filetransfer
 filetransfer init --identity <your_username>
 ```  
 
-Your private key is stored in `~/.filetransfer/keys/`. Protect it and share the public key with peers.  
+Your private key is stored in `~/.filetransfer/keys/`. Keep it safe and share the public key with peers.  
 
 ### 2. Send a file  
 
@@ -70,13 +70,13 @@ filetransfer receive --port 4242 --output ./downloads/
 
 ## Command‑Line Reference  
 
-| Command | Description |
-|---------|-------------|
-| `filetransfer send` | Transmit a file to a remote peer. |
-| `filetransfer receive` | Listen for incoming transfers. |
+| Command               | Description                              |
+|-----------------------|------------------------------------------|
+| `filetransfer send`   | Transmit a file to a remote peer.        |
+| `filetransfer receive`| Listen for incoming transfers.           |
 | `filetransfer resume` | Continue a previously interrupted transfer. |
 | `filetransfer relay list` | Discover and rank available relay nodes. |
-| `filetransfer init` | Create or refresh your identity keys. |
+| `filetransfer init`   | Create or refresh your identity keys.    |
 
 ---  
 
@@ -116,14 +116,14 @@ filetransfer receive --port 4242 --output ./downloads/
 
 ## Project Metrics  
 
-| Metric | Value |
-|--------|-------|
-| Repository size | 4.2 MB |
-| Python source lines | 3,187 |
-| Test coverage | 94.6 % |
-| Latest release | v2.1.0 (2026‑08‑05) |
-| Supported platforms | Linux · macOS · Windows · WSL |
-| Cipher suite | AES‑256‑GCM · Ed25519 · SHA‑3‑512 |
+| Metric               | Value                               |
+|----------------------|-------------------------------------|
+| Repository size      | 4.2 MB                              |
+| Python source lines  | 3,187                               |
+| Test coverage        | 94.6 %                              |
+| Latest release       | v2.1.0 (2026‑08‑05)                   |
+| Supported platforms  | Linux · macOS · Windows · WSL       |
+| Cipher suite         | AES‑256‑GCM · Ed25519 · SHA‑3‑512     |
 
 ---  
 
