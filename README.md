@@ -1,140 +1,183 @@
 # fileTransfer
 
-A lightweight, peer‑to‑peer command‑line tool for end‑to‑end encrypted file transfers.
+A lightweight, pure‑Python command‑line tool for secure, peer‑to‑peer file transfers.  
+Files are exchanged directly, without a cloud intermediary, using AES‑256‑GCM for confidentiality and Ed25519 signatures for mutual authentication.  
+Supports resumable sessions, real‑time progress reporting, and a minimal plugin system.
 
 ---
 
-## Badges  
+## Badges
 
-[![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)  
-[![Code style](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)  
-[![Tests](https://img.shields.io/badge/tests-passing-success?style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)  
-[![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)  
-[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)  
-[![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)  
+[![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)](https://www.python.org/downloads/)
+[![Code style](https://img.shields.io/badge/code%20style-black-000000?style=flat-square)](https://github.com/psf/black)
+[![Tests](https://img.shields.io/github/actions/workflow/status/shubhyagami/filetransfer/tests.yml?label=tests&style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)
+[![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)](https://github.com/shubhyagami/filetransfer/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
 
----  
+---
 
-## About  
+## Table of Contents
 
-`filetransfer` is a pure‑Python CLI that lets two parties exchange files directly, with no cloud intermediary.  
-Data is protected with AES‑256‑GCM for confidentiality and Ed25519 signatures for mutual authentication.  The tool supports resumable sessions, real‑time progress reporting, and a simple plugin system for custom logic.
+- [Getting Started](#getting-started)
+- [Key Features](#key-features)
+- [Installation](#installation)
+- [Command Reference](#command-reference)
+- [Advanced Usage](#advanced-usage)
+- [Configuration](#configuration)
+- [Contributing](#contributing)
+- [Project Metrics](#project-metrics)
+- [Changelog](#changelog)
+- [License](#license)
 
----  
+---
 
-## Key Features  
+## Getting Started
 
-* **End‑to‑End Encryption** – AES‑256‑GCM with per‑transfer keys.  
-* **Direct P2P** – Connections are established straight between peers.  
-* **High‑Performance Chunking** – Optimised chunk sizes for common network conditions.  
-* **Mutual Authentication** – Ed25519 keys protect against man‑in‑the‑middle attacks.  
-* **Resumable Transfers** – Pause and resume after interruptions.  
-* **Live Progress Reporting** – ETA, throughput, and integrity checks.  
-* **Plugin Hooks** – Run custom pre‑ and post‑transfer logic.  
-* **Cross‑Platform** – Works on Linux, macOS, Windows, and WSL.
+```bash
+# Create a key pair for your identity
+filetransfer init <username>
+```
 
----  
+Your private key is stored in `~/.filetransfer/keys/<username>_private.ed25519`.  
+Share the corresponding public key file (`<username>_public.ed25519`) with your peers.
 
-## Installation  
+```bash
+# Send a file
+filetransfer send \
+  --file ./document.pdf \
+  --to bob:192.168.1.10:4242 \
+  --pub-key ~/.filetransfer/keys/bob_public.ed25519
+```
 
-    pip install filetransfer
+```bash
+# Receive a file
+filetransfer receive --port 4242 --output ./downloads/
+```
 
----  
+---
 
-## Getting Started  
+## Key Features
 
-### 1. Create your identity  
+- **End‑to‑End Encryption**: AES‑256‑GCM per transfer
+- **Direct P2P**: No relay unless explicitly requested
+- **Chunking & Throughput**: Optimised for common network conditions (default 8 MiB)
+- **Mutual Authentication**: Ed25519 key exchange protects against MITM
+- **Resumable Transfers**: Pause and resume after interruptions
+- **Real‑Time Progress**: ETA, throughput, integrity checks
+- **Plugin Hooks**: `pre-<cmd>` and `post-<cmd>` scripts
+- **Cross‑Platform**: Linux, macOS, Windows, WSL
 
-    filetransfer init --identity <your_username>
+---
 
-Your private key is stored in `~/.filetransfer/keys/`.  Keep it safe and share the public key file with peers.
+## Installation
 
-### 2. Send a file  
+```bash
+pip install filetransfer
+```
 
-    filetransfer send --file ./document.pdf \
-      --to <recipient_username>@<recipient_ip>:4242 \
-      --key ~/.filetransfer/keys/<recipient_username>_public.ed25519
+Prerequisites: Python 3.9 or newer, the `cryptography`, `asyncio`, and `aiohttp` packages (installed automatically).
 
-### 3. Receive a file  
+---
 
-    filetransfer receive --port 4242 --output ./downloads/
+## Command Reference
 
----  
+| Command | Description |
+|---------|-------------|
+| `filetransfer init <username>` | Generate a new Ed25519 key pair |
+| `filetransfer send …` | Transmit a file to a remote peer |
+| `filetransfer receive …` | Listen for incoming transfers |
+| `filetransfer resume …` | Continue a previously interrupted transfer |
+| `filetransfer relay list` | Discover and rank public relay nodes |
+| `filetransfer help <cmd>` | Show help for a specific command |
 
-## Command‑Line Reference  
+> **Tip**: Use `filetransfer help` for a full list of options and flags.
 
-| Command                | Description                                |
-|------------------------|--------------------------------------------|
-| `filetransfer send`    | Transmit a file to a remote peer.         |
-| `filetransfer receive` | Listen for incoming transfers.             |
-| `filetransfer resume` | Continue a previously interrupted transfer.|
-| `filetransfer relay list` | Discover and rank available relay nodes. |
-| `filetransfer init`    | Create or refresh your identity keys.      |
+---
 
----  
+## Advanced Usage
 
-## Advanced Usage  
+### Custom Chunk Size
 
-* **Adjust chunk size** – e.g. `--chunk-size 16777216`.  
-* **Resume a session** –  
-    `filetransfer resume --session ~/.filetransfer/sessions/<session_id>.ftsession`  
-* **Relay mode** – When direct P2P fails:  
-    ```
-    filetransfer send --file report.pdf \
-      --to bob:4242 \
-      --relay wss://relay.filetransfer.io
-    ```  
-    (The relay forwards encrypted packets only; it never decrypts the payload.)  
-* **Audit log** – Keep a record for compliance:  
-    `filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log`
+```bash
+filetransfer send --chunk-size 16777216 …
+```
 
----  
+### Resuming a Transfer
 
-## Contributing  
+```bash
+filetransfer resume --session ~/.filetransfer/sessions/<session_id>.ftsession
+```
 
-1. Open an issue to describe the bug or feature.  
-2. Fork the repository and create a clear branch (`fix/...` or `feat/...`).  
-3. Follow the style guide – run `black` before committing.  
-4. Run tests and keep coverage ≥ 90 %:  
-    ```
-    pytest tests/ --cov=filetransfer --cov-report=term-missing
-    ```  
-5. Submit a pull request with a concise description and reference the related issue.
+### Relay Mode
 
----  
+When a direct connection fails, forward through a WebSocket relay:
 
-## Project Metrics  
+```bash
+filetransfer send \
+  --file report.pdf \
+  --to bob:4242 \
+  --relay wss://relay.filetransfer.io
+```
 
-| Metric                   | Value                         |
-|--------------------------|-------------------------------|
-| Repo size                | 4.2 MB                        |
-| Python source lines      | 3,187                         |
-| Test coverage           | 94.6 %                        |
-| Latest release           | v2.1.0 (2026‑08‑05)           |
-| Supported platforms     | Linux · macOS · Windows · WSL|
-| Cipher suite             | AES‑256‑GCM · Ed25519 · SHA‑3‑512|
+> The relay only forwards the encrypted packets; it never sees the plaintext.
 
----  
+### Audit Logging
 
-## Changelog  
+```bash
+filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
+```
 
-### v2.1.0 — 2026‑08‑05  
+---
 
-**Added**  
-- SHA‑3 integrity verification alongside SHA‑256.  
-- `filetransfer relay list` for discovering fast relay nodes.  
+## Configuration
 
-**Changed**  
-- Default chunk size increased from 4 MiB to 8 MiB.  
-- Read receipts now embed checksum metadata for streaming checks.  
+All runtime options can be set via environment variables prefixed with `FILETRANSFER_`.  
+Example:
 
-**Fixed**  
-- Resolved a race condition in multi‑peer transfers.  
-- Patched key‑rotation edge case that dropped active connections.  
-- Fixed Unicode path handling on Windows.
+```bash
+export FILETRANSFER_LOG_LEVEL=INFO
+filetransfer send …
+```
 
----  
+See `filetransfer help` for the full list of supported variables.
 
-## License  
+---
 
-MIT License – see the [LICENSE](LICENSE) file.
+## Contributing
+
+1. Fork the repo and create a topic branch (`feat/...` or `fix/...`).
+2. Run `black --check .` and `ruff .` (or your preferred linter).
+3. Run tests: `pytest tests/ --cov=filetransfer --cov-report=term-missing`.
+4. Open a pull request with a concise description; reference the related issue.
+
+---
+
+## Project Metrics
+
+| Metric | Value |
+|--------|-------|
+| Repo size | 4.2 MB |
+| Python source lines | 3,187 |
+| Test coverage | 94.6 % |
+| Latest release | v2.1.0 (2026‑08‑05) |
+| Supported platforms | Linux, macOS, Windows, WSL |
+| Cipher suite | AES‑256‑GCM, Ed25519, SHA‑3‑512 |
+
+---
+
+## Changelog
+
+### v2.1.0 — 2026‑08‑05
+
+| Change | Details |
+|--------|---------|
+| Added | SHA‑3 integrity verification, `relay list` command |
+| Changed | Default chunk size↑ from 4 MiB to 8 MiB |
+| Fixed | Race condition in multi‑peer transfers, key‑rotation edge case, Unicode paths on Windows |
+
+---
+
+## License
+
+MIT – see the [LICENSE](LICENSE) file.
