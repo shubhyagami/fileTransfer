@@ -1,11 +1,11 @@
 # fileTransfer
 
 A lightweight, pure‑Python command‑line tool for encrypted peer‑to‑peer file transfers.  
-No third‑party relay is required unless you explicitly enable one.
+No third‑party relay is required unless you choose to use one.
 
 ---
 
-## Badges
+## 📦 Badges
 
 ![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)
 ![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/filetransfer/ci.yml?branch=main&style=flat-square)
@@ -15,8 +15,7 @@ No third‑party relay is required unless you explicitly enable one.
 
 ---
 
-## Table of Contents
-
+## 📋 Table of Contents
 1. [Overview](#overview)
 2. [Getting Started](#getting-started)
 3. [Installation](#installation)
@@ -24,154 +23,141 @@ No third‑party relay is required unless you explicitly enable one.
 5. [Command Reference](#command-reference)
 6. [Advanced Usage](#advanced-usage)
 7. [Contributing](#contributing)
-8. [Metrics](#metrics)
-9. [Changelog](#changelog)
-10. [License](#license)
+8. [Changelog](#changelog)
+9. [License](#license)
 
 ---
 
-## Overview
+## 🚀 Overview
 
-`fileTransfer` lets you send and receive files securely with end‑to‑end encryption.  
+`fileTransfer` encrypts your data end‑to‑end (AES‑256‑GCM for the file, Ed25519 for authentication) and transfers it over a direct TCP link.  
+Optional WebSocket relays can be used when a direct connection is not possible.
+
 Key features:
 
-* **End‑to‑end encryption** – AES‑256‑GCM for data, Ed25519 for authentication.  
-* **Peer‑to‑peer** – Direct TCP connections; an optional WebSocket relay can be used when needed.  
-* **Resumable** – Interrupt a transfer and resume it later without data loss.  
-* **Cross‑platform** – Works on Linux, macOS, Windows (including WSL).  
-* **Hooks** – Run custom scripts before or after each transfer.
+- **End‑to‑end encryption** – no back‑doors, all keys stay local.
+- **Peer‑to‑peer** – no central server unless you opt‑in.
+- **Resumable** – pause a transfer and pick up where you left off.
+- **Cross‑platform** – works on Linux, macOS, Windows, and WSL.
+- **Hooks** – run custom scripts before or after each transfer.
 
 ---
 
-## Getting Started
+## ⚡ Getting Started
 
-1. **Create an identity** – generate a public/private key pair.  
-2. **Share the public key** with the peer you'll talk to.  
-3. **Send or receive** files using the provided commands.
+1. **Create an identity** – generate a key pair.  
+2. **Share the public key** with the peer.  
+3. **Send or receive** files using the CLI.
 
 ---
 
-## Installation
+## 📦 Installation
 
-```text
+```bash
 pip install filetransfer
 ```
 
-The package ships only source code and runs wherever Python 3.9+ is available.
+The package contains only source files and runs on any system with Python 3.9+.
 
 ---
 
-## Quick Start
+## 🔄 Quick Start
 
 ### 1. Create an identity
 
-```text
-    filetransfer init --identity alice
+```bash
+filetransfer init --identity alice
 ```
 
-This creates
+This creates:
 
 ```
-    ~/.filetransfer/keys/alice_private.ed25519
-    ~/.filetransfer/keys/alice_public.ed25519
+~/.filetransfer/keys/alice_private.ed25519
+~/.filetransfer/keys/alice_public.ed25519
 ```
 
-Share the public key file with your peer.
+Share `alice_public.ed25519` with your peer.
 
 ### 2. Send a file
 
-```text
-    filetransfer send \
-        --file ./document.pdf \
-        --to bob@203.0.113.5:4242 \
-        --key ~/.filetransfer/keys/bob_public.ed25519
+```bash
+filetransfer send \
+    --file ./document.pdf \
+    --to bob@203.0.113.5:4242 \
+    --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
 ### 3. Receive a file
 
-```text
-    filetransfer receive \
-        --port 4242 \
-        --output ./downloads/
+```bash
+filetransfer receive \
+    --port 4242 \
+    --output ./downloads/
 ```
 
 ---
 
-## Command Reference
+## 📚 Command Reference
 
 | Command | Purpose |
 |---------|---------|
-| `init`  | Generate or refresh a key pair. |
-| `send`  | Transmit a file to a remote peer. |
-| `receive` | Listen for incoming transfers. |
+| `init`   | Generate or refresh a key pair. |
+| `send`   | Transmit a file to a remote peer. |
+| `receive`| Listen for incoming transfers. |
 | `resume` | Continue an interrupted transfer. |
-| `relay`   | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit`   | Generate or read audit logs. |
+| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit`  | Generate or read audit logs. |
 
-Run `filetransfer <command> --help` for detailed options for each command.
+Run `filetransfer <command> --help` for detailed options.
 
 ---
 
-## Advanced Usage
+## ⚙️ Advanced Usage
 
 ### Custom chunk size
 
-```text
-    filetransfer send --chunk-size 16777216 --file report.pdf …
+```bash
+filetransfer send --chunk-size 16777216 --file report.pdf …
 ```
 
 ### Resuming a transfer
 
-```text
-    filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
+```bash
+filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 ```
 
 ### Using a relay server
 
-```text
-    filetransfer send \
-        --file report.pdf \
-        --to bob:4242 \
-        --relay wss://relay.filetransfer.io
+```bash
+filetransfer send \
+    --file report.pdf \
+    --to bob:4242 \
+    --relay wss://relay.filetransfer.io
 ```
 
 ### Audit logging
 
-```text
-    filetransfer receive \
-        --port 4242 \
-        --audit-log ~/.filetransfer/audit/2026-08.log
+```bash
+filetransfer receive \
+    --port 4242 \
+    --audit-log ~/.filetransfer/audit/2026-08.log
 ```
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository and open an issue to discuss your changes.  
-2. Create a topic branch (`feat/...`, `fix/...`).  
-3. Follow the style guide – run `black` before committing.  
-4. Run the tests (`pytest`) and keep coverage above 90 %.  
-5. Submit a pull request with a clear description and a link to the issue.
-
----
-
-## Metrics
-
-| Metric | Value |
-|--------|-------|
-| Repo size | 4.2 MB |
-| Source lines | 3,187 |
-| Test coverage | 94.6 % |
-| Latest release | v2.1.0 (2026‑08‑05) |
-| Platforms | Linux, macOS, Windows, WSL |
-| Cipher suite | AES‑256‑GCM, Ed25519, SHA‑3‑512 |
+1. Fork the repository and open an issue to discuss your idea.  
+2. Branch off a topic name (`feat/...`, `fix/...`).  
+3. Keep the style consistent – run `black .` before committing.  
+4. Paste a test or run `pytest` and maintain coverage ≥ 90 %.  
+5. Submit a pull request with a clear description and link to the issue.
 
 ---
 
-## Changelog
+## 📜 Changelog (latest)
 
 ### v2.1.0 – 2026‑08‑05
-
 * Added SHA‑3‑512 integrity verification.  
 * Introduced `relay list` command.  
 * Increased default chunk size to 8 MiB.  
@@ -179,13 +165,12 @@ Run `filetransfer <command> --help` for detailed options for each command.
 * Corrected Unicode path handling on Windows.
 
 ### v2.0.0 – 2026‑04‑12
-
 * Reimplemented session persistence for resumable transfers.  
-* Updated key handling to use `cryptography.io`.  
+* Updated key handling to use `cryptography`.  
 * Added support for Windows Subsystem for Linux (WSL).
 
 ---
 
-## License
+## 📄 License
 
 MIT – see the [LICENSE](LICENSE) file.
