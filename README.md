@@ -1,7 +1,6 @@
 # fileTransfer
 
-A lightweight, pure‑Python command‑line tool for encrypted peer‑to‑peer file transfers.  
-No third‑party relay is required unless you choose to use one.
+A lightweight, pure‑Python command‑line tool that encrypts and transfers files directly between peers.
 
 ---
 
@@ -15,39 +14,75 @@ No third‑party relay is required unless you choose to use one.
 
 ---
 
-## 📋 Table of Contents
+## 📋 Table of contents
 1. [Overview](#overview)
-2. [Getting Started](#getting-started)
+2. [Quick start](#quick-start)
 3. [Installation](#installation)
-4. [Quick Start](#quick-start)
-5. [Command Reference](#command-reference)
-6. [Advanced Usage](#advanced-usage)
-7. [Contributing](#contributing)
-8. [Changelog](#changelog)
-9. [License](#license)
+4. [Command reference](#command-reference)
+5. [Advanced usage](#advanced-usage)
+6. [Contributing](#contributing)
+7. [Changelog](#changelog)
+8. [License](#license)
 
 ---
 
 ## 🚀 Overview
 
-`fileTransfer` encrypts your data end‑to‑end (AES‑256‑GCM for the file, Ed25519 for authentication) and transfers it over a direct TCP link.  
-Optional WebSocket relays can be used when a direct connection is not possible.
+`fileTransfer` encrypts files end‑to‑end and sends them over a direct TCP link.  
+If a direct path cannot be established, an optional WebSocket relay can be used.  
+No third‑party server is required unless you choose to use one.
 
-Key features:
+**Key features**
 
-- **End‑to‑end encryption** – no back‑doors, all keys stay local.
-- **Peer‑to‑peer** – no central server unless you opt‑in.
-- **Resumable** – pause a transfer and pick up where you left off.
-- **Cross‑platform** – works on Linux, macOS, Windows, and WSL.
-- **Hooks** – run custom scripts before or after each transfer.
+* End‑to‑end encryption (AES‑256‑GCM for the file and Ed25519 for authentication)
+* Peer‑to‑peer architecture – no central server unless you opt‑in
+* Resumable transfers – pause and pick up where you left off
+* Cross‑platform – works on Linux, macOS, Windows, and WSL
+* Custom hooks – run scripts before or after a transfer
+* Audit logging – keep a record of every transfer
 
 ---
 
-## ⚡ Getting Started
+## 🔄 Quick start
 
-1. **Create an identity** – generate a key pair.  
-2. **Share the public key** with the peer.  
-3. **Send or receive** files using the CLI.
+> **Prerequisite** – Python 3.9+ must be installed.
+
+```bash
+# Install the package
+pip install filetransfer
+```
+
+### 1. Create an identity
+
+```bash
+filetransfer init --identity alice
+```
+
+This creates the following files in your home directory:
+
+```
+~/.filetransfer/keys/alice_private.ed25519
+~/.filetransfer/keys/alice_public.ed25519
+```
+
+Share `alice_public.ed25519` with the peer you want to transfer files to.
+
+### 2. Send a file
+
+```bash
+filetransfer send \
+  --file ./document.pdf \
+  --to bob@203.0.113.5:4242 \
+  --key ~/.filetransfer/keys/bob_public.ed25519
+```
+
+### 3. Receive a file
+
+```bash
+filetransfer receive \
+  --port 4242 \
+  --output ./downloads/
+```
 
 ---
 
@@ -57,62 +92,26 @@ Key features:
 pip install filetransfer
 ```
 
-The package contains only source files and runs on any system with Python 3.9+.
+The package is pure Python and runs on any system that has Python 3.9+.
 
 ---
 
-## 🔄 Quick Start
+## 📚 Command reference
 
-### 1. Create an identity
-
-```bash
-filetransfer init --identity alice
-```
-
-This creates:
-
-```
-~/.filetransfer/keys/alice_private.ed25519
-~/.filetransfer/keys/alice_public.ed25519
-```
-
-Share `alice_public.ed25519` with your peer.
-
-### 2. Send a file
-
-```bash
-filetransfer send \
-    --file ./document.pdf \
-    --to bob@203.0.113.5:4242 \
-    --key ~/.filetransfer/keys/bob_public.ed25519
-```
-
-### 3. Receive a file
-
-```bash
-filetransfer receive \
-    --port 4242 \
-    --output ./downloads/
-```
-
----
-
-## 📚 Command Reference
-
-| Command | Purpose |
-|---------|---------|
-| `init`   | Generate or refresh a key pair. |
+| Command | Description |
+|---------|-------------|
+| `init`   | Create or refresh a key pair. |
 | `send`   | Transmit a file to a remote peer. |
 | `receive`| Listen for incoming transfers. |
 | `resume` | Continue an interrupted transfer. |
 | `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
 | `audit`  | Generate or read audit logs. |
 
-Run `filetransfer <command> --help` for detailed options.
+Run `filetransfer <command> --help` for a full list of options.
 
 ---
 
-## ⚙️ Advanced Usage
+## ⚙️ Advanced usage
 
 ### Custom chunk size
 
@@ -130,43 +129,44 @@ filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 
 ```bash
 filetransfer send \
-    --file report.pdf \
-    --to bob:4242 \
-    --relay wss://relay.filetransfer.io
+  --file report.pdf \
+  --to bob:4242 \
+  --relay wss://relay.filetransfer.io
 ```
 
 ### Audit logging
 
 ```bash
 filetransfer receive \
-    --port 4242 \
-    --audit-log ~/.filetransfer/audit/2026-08.log
+  --port 4242 \
+  --audit-log ~/.filetransfer/audit/2026-08.log
 ```
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repository and open an issue to discuss your idea.  
-2. Branch off a topic name (`feat/...`, `fix/...`).  
-3. Keep the style consistent – run `black .` before committing.  
-4. Paste a test or run `pytest` and maintain coverage ≥ 90 %.  
-5. Submit a pull request with a clear description and link to the issue.
+1. Fork the repo and create a branch (`feat/...` or `fix/...`).
+2. Follow the code style – run `black .` before committing.
+3. Run tests with `pytest`; keep coverage ≥ 90 %.
+4. Push a pull request with a clear description referencing the issue.
+
+Happy hacking!
 
 ---
 
-## 📜 Changelog (latest)
+## 📜 Changelog
 
 ### v2.1.0 – 2026‑08‑05
-* Added SHA‑3‑512 integrity verification.  
-* Introduced `relay list` command.  
-* Increased default chunk size to 8 MiB.  
-* Fixed race condition in multi‑peer transfers.  
+* Added SHA‑3‑512 integrity verification.
+* Introduced `relay list` command.
+* Increased default chunk size to 8 MiB.
+* Fixed race condition in multi‑peer transfers.
 * Corrected Unicode path handling on Windows.
 
 ### v2.0.0 – 2026‑04‑12
-* Reimplemented session persistence for resumable transfers.  
-* Updated key handling to use `cryptography`.  
+* Reimplemented session persistence for resumable transfers.
+* Updated key handling to use `cryptography`.
 * Added support for Windows Subsystem for Linux (WSL).
 
 ---
