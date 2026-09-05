@@ -1,6 +1,7 @@
 # fileTransfer
 
-A lightweight, pure‑Python command‑line tool that encrypts and transfers files directly between peers.
+A lightweight, pure‑Python CLI that encrypts and transfers files directly between peers over TCP (or an optional WebSocket relay).  
+No central server is required unless you choose to use one.
 
 ---
 
@@ -14,38 +15,17 @@ A lightweight, pure‑Python command‑line tool that encrypts and transfers fil
 
 ---
 
-## 📋 Table of contents
-1. [Overview](#overview)
-2. [Quick start](#quick-start)
-3. [Installation](#installation)
-4. [Command reference](#command-reference)
-5. [Advanced usage](#advanced-usage)
-6. [Contributing](#contributing)
-7. [Changelog](#changelog)
-8. [License](#license)
-
----
-
 ## 🚀 Overview
 
-`fileTransfer` encrypts files end‑to‑end and sends them over a direct TCP link.  
-If a direct path cannot be established, an optional WebSocket relay can be used.  
-No third‑party server is required unless you choose to use one.
-
-**Key features**
-
-* End‑to‑end encryption (AES‑256‑GCM for the file and Ed25519 for authentication)
-* Peer‑to‑peer architecture – no central server unless you opt‑in
-* Resumable transfers – pause and pick up where you left off
-* Cross‑platform – works on Linux, macOS, Windows, and WSL
-* Custom hooks – run scripts before or after a transfer
-* Audit logging – keep a record of every transfer
+`fileTransfer` encrypts files end‑to‑end using AES‑256‑GCM and authenticates peers with Ed25519 keys.  
+The transfer runs over a direct TCP connection; if that fails, a WebSocket relay can be used as a fallback.  
+Features include resumable transfers, custom hooks, audit logging, and cross‑platform support.
 
 ---
 
-## 🔄 Quick start
+## ⚡️ Getting Started
 
-> **Prerequisite** – Python 3.9+ must be installed.
+> **Prerequisite** – Python 3.9 or newer.
 
 ```bash
 # Install the package
@@ -58,7 +38,7 @@ pip install filetransfer
 filetransfer init --identity alice
 ```
 
-This creates the following files in your home directory:
+This writes two key files to `~/.filetransfer/keys/`:
 
 ```
 ~/.filetransfer/keys/alice_private.ed25519
@@ -86,88 +66,99 @@ filetransfer receive \
 
 ---
 
-## 📦 Installation
+## 🛠️ Installation
 
 ```bash
 pip install filetransfer
 ```
 
-The package is pure Python and runs on any system that has Python 3.9+.
+The package is pure Python and works on Linux, macOS, Windows, and WSL.
 
 ---
 
-## 📚 Command reference
+## 📖 Usage
 
 | Command | Description |
 |---------|-------------|
-| `init`   | Create or refresh a key pair. |
-| `send`   | Transmit a file to a remote peer. |
-| `receive`| Listen for incoming transfers. |
-| `resume` | Continue an interrupted transfer. |
-| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit`  | Generate or read audit logs. |
+| `init` | Generate or refresh a key pair. |
+| `send` | Transfer a file to a remote peer. |
+| `receive` | Listen for incoming transfers. |
+| `resume` | Continue an interrupted transfer from a session file. |
+| `relay` | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit` | Generate or read audit logs. |
 
-Run `filetransfer <command> --help` for a full list of options.
+Run `filetransfer <command> --help` for detailed options.
 
 ---
 
-## ⚙️ Advanced usage
+## 🧩 Advanced Usage
 
-### Custom chunk size
+- **Custom chunk size**
 
-```bash
-filetransfer send --chunk-size 16777216 --file report.pdf …
-```
+  ```bash
+  filetransfer send --chunk-size 16777216 --file report.pdf …
+  ```
 
-### Resuming a transfer
+- **Resume a transfer**
 
-```bash
-filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
-```
+  ```bash
+  filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
+  ```
 
-### Using a relay server
+- **Use a relay server**
 
-```bash
-filetransfer send \
-  --file report.pdf \
-  --to bob:4242 \
-  --relay wss://relay.filetransfer.io
-```
+  ```bash
+  filetransfer send \
+    --file report.pdf \
+    --to bob:4242 \
+    --relay wss://relay.filetransfer.io
+  ```
 
-### Audit logging
+- **Audit logging**
 
-```bash
-filetransfer receive \
-  --port 4242 \
-  --audit-log ~/.filetransfer/audit/2026-08.log
-```
+  ```bash
+  filetransfer receive \
+    --port 4242 \
+    --audit-log ~/.filetransfer/audit/2026-08.log
+  ```
+
+---
+
+## ⭐️ Features
+
+* End‑to‑end encryption (AES‑256‑GCM for data, Ed25519 for authentication)  
+* Peer‑to‑peer architecture (no mandatory central server)  
+* Resumable transfers – pause and pick up where you left off  
+* Cross‑platform – runs on Linux, macOS, Windows, WSL  
+* Custom hooks – run scripts before or after a transfer  
+* Audit logging – log every transfer for compliance or debugging
+
+---
+
+## 📝 Changelog
+
+### v2.1.0 – 2026‑08‑05
+* Added SHA‑3‑512 integrity verification.  
+* Introduced `relay list` command.  
+* Increased default chunk size to 8 MiB.  
+* Fixed race condition in multi‑peer transfers.  
+* Corrected Unicode path handling on Windows.
+
+### v2.0.0 – 2026‑04‑12
+* Reimplemented session persistence for resumable transfers.  
+* Updated key handling to use `cryptography`.  
+* Added support for Windows Subsystem for Linux (WSL).
 
 ---
 
 ## 🤝 Contributing
 
-1. Fork the repo and create a branch (`feat/...` or `fix/...`).
-2. Follow the code style – run `black .` before committing.
-3. Run tests with `pytest`; keep coverage ≥ 90 %.
-4. Push a pull request with a clear description referencing the issue.
+1. Fork the repo and create a feature/fix branch (`feat/...` or `fix/...`).  
+2. Follow the code style – run `black .` before committing.  
+3. Run tests with `pytest`; keep coverage ≥ 90 %.  
+4. Open a pull request with a clear description referencing any related issue.
 
 Happy hacking!
-
----
-
-## 📜 Changelog
-
-### v2.1.0 – 2026‑08‑05
-* Added SHA‑3‑512 integrity verification.
-* Introduced `relay list` command.
-* Increased default chunk size to 8 MiB.
-* Fixed race condition in multi‑peer transfers.
-* Corrected Unicode path handling on Windows.
-
-### v2.0.0 – 2026‑04‑12
-* Reimplemented session persistence for resumable transfers.
-* Updated key handling to use `cryptography`.
-* Added support for Windows Subsystem for Linux (WSL).
 
 ---
 
