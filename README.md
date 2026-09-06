@@ -1,29 +1,25 @@
 # fileTransfer
 
-A lightweight, pure‑Python CLI that encrypts and transfers files directly between peers over TCP (or an optional WebSocket relay).  
-No central server is required unless you choose to use one.
-
----
+A lightweight, pure‑Python CLI that encrypts and transfers files directly between peers over TCP (or an optional WebSocket relay). No central server is required unless you choose to use one.
 
 ## 📦 Badges
 
-![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)
-![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/filetransfer/ci.yml?branch=main&style=flat-square)
-![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)  
+![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/filetransfer/ci.yml?branch=main&style=flat-square)  
+![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)  
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)  
 ![PyPI](https://img.shields.io/pypi/v/filetransfer?style=flat-square)
-
----
 
 ## 🚀 Overview
 
-`fileTransfer` encrypts files end‑to‑end using AES‑256‑GCM and authenticates peers with Ed25519 keys.  
-The transfer runs over a direct TCP connection; if that fails, a WebSocket relay can be used as a fallback.  
-Features include resumable transfers, custom hooks, audit logging, and cross‑platform support.
+* **End‑to‑end encryption** – AES‑256‑GCM for data, Ed25519 for authentication.  
+* **Peer‑to‑peer** – direct TCP connections; fall back to WebSocket relay if necessary.  
+* **Resumable** – pause and continue transfers with a session file.  
+* **Cross‑platform** – works on Linux, macOS, Windows, and WSL.  
+* **Custom hooks** – run scripts before or after a transfer.  
+* **Audit logging** – capture a log of every transfer.
 
----
-
-## ⚡️ Getting Started
+## 🔧 Getting Started
 
 > **Prerequisite** – Python 3.9 or newer.
 
@@ -38,7 +34,7 @@ pip install filetransfer
 filetransfer init --identity alice
 ```
 
-This writes two key files to `~/.filetransfer/keys/`:
+Two key files are created in `~/.filetransfer/keys/`:
 
 ```
 ~/.filetransfer/keys/alice_private.ed25519
@@ -64,78 +60,60 @@ filetransfer receive \
   --output ./downloads/
 ```
 
----
-
-## 🛠️ Installation
-
-```bash
-pip install filetransfer
-```
-
-The package is pure Python and works on Linux, macOS, Windows, and WSL.
-
----
-
-## 📖 Usage
+## 📖 Commands
 
 | Command | Description |
 |---------|-------------|
-| `init` | Generate or refresh a key pair. |
-| `send` | Transfer a file to a remote peer. |
-| `receive` | Listen for incoming transfers. |
+| `init`   | Generate or refresh a key pair. |
+| `send`   | Transfer a file to a remote peer. |
+| `receive`| Listen for incoming transfers. |
 | `resume` | Continue an interrupted transfer from a session file. |
-| `relay` | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit` | Generate or read audit logs. |
+| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit`  | Generate or read audit logs. |
 
 Run `filetransfer <command> --help` for detailed options.
 
----
-
 ## 🧩 Advanced Usage
 
-- **Custom chunk size**
+* **Custom chunk size**
 
   ```bash
   filetransfer send --chunk-size 16777216 --file report.pdf …
   ```
 
-- **Resume a transfer**
+* **Resume a transfer**
 
   ```bash
   filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
   ```
 
-- **Use a relay server**
+* **Use a relay server**
 
   ```bash
   filetransfer send \
-    --file report.pdf \
-    --to bob:4242 \
-    --relay wss://relay.filetransfer.io
+      --file report.pdf \
+      --to bob:4242 \
+      --relay wss://relay.filetransfer.io
   ```
 
-- **Audit logging**
+* **Audit logging**
 
   ```bash
   filetransfer receive \
-    --port 4242 \
-    --audit-log ~/.filetransfer/audit/2026-08.log
+      --port 4242 \
+      --audit-log ~/.filetransfer/audit/2026-08.log
   ```
-
----
 
 ## ⭐️ Features
 
-* End‑to‑end encryption (AES‑256‑GCM for data, Ed25519 for authentication)  
+* End‑to‑end encryption (AES‑256‑GCM + Ed25519)  
 * Peer‑to‑peer architecture (no mandatory central server)  
-* Resumable transfers – pause and pick up where you left off  
-* Cross‑platform – runs on Linux, macOS, Windows, WSL  
-* Custom hooks – run scripts before or after a transfer  
-* Audit logging – log every transfer for compliance or debugging
+* Resumable transfers  
+* Cross‑platform support  
+* Hooks for custom pre/post‑transfer scripts  
+* Audit logging
 
----
-
-## 📝 Changelog
+## 📝 Changelog (last two releases)
 
 ### v2.1.0 – 2026‑08‑05
 * Added SHA‑3‑512 integrity verification.  
@@ -149,8 +127,6 @@ Run `filetransfer <command> --help` for detailed options.
 * Updated key handling to use `cryptography`.  
 * Added support for Windows Subsystem for Linux (WSL).
 
----
-
 ## 🤝 Contributing
 
 1. Fork the repo and create a feature/fix branch (`feat/...` or `fix/...`).  
@@ -159,8 +135,6 @@ Run `filetransfer <command> --help` for detailed options.
 4. Open a pull request with a clear description referencing any related issue.
 
 Happy hacking!
-
----
 
 ## 📄 License
 
