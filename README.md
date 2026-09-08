@@ -1,10 +1,14 @@
 # fileTransfer
 
-A lightweight, pure‑Python command‑line tool for secure, peer‑to‑peer file transfer over TCP (or an optional WebSocket relay). No central server is required unless you choose to use one.
+A lightweight, pure‑Python command‑line tool for secure, peer‑to‑peer file transfer over TCP (or an optional WebSocket relay). No central server is required unless you decide to use one.
+
+## ⚙️ Prerequisites
+
+- Python 3.9 or newer
 
 ## 📦 Badges
 
-![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)  
+![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?style=flat-square&logo=python)  
 ![CI](https://img.shields.io/github/actions/workflow/status/shubhyagami/filetransfer/ci.yml?branch=main&style=flat-square)  
 ![Coverage](https://img.shields.io/badge/coverage-94.6%25-success?style=flat-square)  
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)  
@@ -12,19 +16,21 @@ A lightweight, pure‑Python command‑line tool for secure, peer‑to‑peer fi
 
 ---
 
-## 🚀 Quickstart
+## 🚀 Getting Started
+
+### 1. Install
 
 ```bash
-# Install the package
 pip install filetransfer
 ```
 
+### 2. Create an identity (key pair)
+
 ```bash
-# 1) Create an identity (key pair)
 filetransfer init --identity alice
 ```
 
-Two key files are created under `~/.filetransfer/keys/`:
+This creates:
 
 ```
 ~/.filetransfer/keys/alice_private.ed25519
@@ -33,16 +39,18 @@ Two key files are created under `~/.filetransfer/keys/`:
 
 Share `alice_public.ed25519` with the peer you want to transfer files to.
 
+### 3. Send a file
+
 ```bash
-# 2) Send a file
 filetransfer send \
   --file ./document.pdf \
   --to bob@203.0.113.5:4242 \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
+### 4. Receive a file
+
 ```bash
-# 3) Receive a file
 filetransfer receive \
   --port 4242 \
   --output ./downloads/
@@ -50,42 +58,34 @@ filetransfer receive \
 
 ---
 
-## ⚡️ Feature Highlights
+## ✨ Features
 
-- **End‑to‑end encryption** – AES‑256‑GCM for data, Ed25519 for authentication and integrity.
-- **Peer‑to‑peer architecture** – direct TCP connections with optional WebSocket relay.
-- **Resumable transfers** – pause and continue with a session file.
-- **Cross‑platform** – works on Linux, macOS, Windows, and WSL.
-- **Custom hooks** – run scripts before or after a transfer.
-- **Audit logging** – automatically record every transfer.
-
----
-
-## 📦 Installation
-
-```bash
-pip install filetransfer
-```
-
-The package works with Python 3.9 or newer.
+| Feature | Description |
+|---------|-------------|
+| **End‑to‑end encryption** | AES‑256‑GCM for data, Ed25519 for authentication and integrity. |
+| **Direct peer‑to‑peer** | TCP connections with an optional WebSocket relay. |
+| **Resumable transfers** | Pause and continue with a session file. |
+| **Cross‑platform** | Works on Linux, macOS, Windows, and WSL. |
+| **Custom hooks** | Run scripts before or after a transfer. |
+| **Audit logging** | Records every transfer automatically. |
 
 ---
 
-## 📁 Directory Layout
+## 📁 Configuration Directory
 
 ```
 ~/.filetransfer/
 ├─ keys/        # Public/private key pairs
-├─ sessions/    # Session files for resumable transfers
-└─ audit/       # Audit logs
+├─ sessions/   # Session files for resumable transfers
+└─ audit/      # Audit logs
 ```
 
 ---
 
 ## 🛠️ Command Reference
 
-| Command | Description |
-|---------|-------------|
+| Command | Purpose |
+|---------|---------|
 | `init`   | Generate or refresh a key pair. |
 | `send`   | Transfer a file to a remote peer. |
 | `receive`| Listen for incoming transfers. |
@@ -97,7 +97,7 @@ Run `filetransfer <command> --help` for detailed options.
 
 ---
 
-## 🧩 Advanced Usage
+## 🔧 Advanced Usage
 
 ### Custom chunk size
 
@@ -120,7 +120,7 @@ filetransfer send \
   --relay wss://relay.filetransfer.io
 ```
 
-### Audit logging
+### Audit log location
 
 ```bash
 filetransfer receive \
@@ -130,7 +130,7 @@ filetransfer receive \
 
 ---
 
-## 📄 Changelog (latest)
+## 📄 Changelog (excerpt)
 
 ### v2.1.0 – 2026‑08‑05
 
@@ -150,10 +150,10 @@ filetransfer receive \
 
 ## 🤝 Contributing
 
-1. Fork the repository and create a feature/fix branch (`feat/...` or `fix/...`).  
+1. Fork the repository and create a feature or bug‑fix branch (`feat/...` or `fix/...`).  
 2. Follow the code style – run `black .` before committing.  
-3. Run tests with `pytest`; keep coverage ≥ 90 %.  
-4. Open a pull request with a clear description referencing any related issue.
+3. Run the test suite with `pytest` and keep coverage ≥ 90 %.  
+4. Open a pull request with a clear description and link to any related issue.
 
 Happy hacking!
 
