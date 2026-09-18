@@ -1,92 +1,94 @@
-[K[2m  [2mmodel openai/gpt-oss-20b failed, trying next...[0m[0m
-[K[2m  [2mmodel openai/gpt-oss-120b failed, trying next...[0m[0m
 # fileTransfer
 
-A lightweight, pure-Python command-line tool for secure peer-to-peer file transfers over TCP. It supports optional WebSocket relays for NAT traversal and an optional central relay server.
+A lightweight, pure‑Python command‑line tool for secure peer‑to‑peer file transfers over TCP.  
+It supports optional WebSocket relays for NAT traversal and an optional central relay server.
 
-[![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
-[![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![CI Status](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)](https://app.codecov.io/gh/shubhyagami/fileTransfer)
+![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)
+![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
+![CI Status](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)
+![Coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)
 
 ---
 
-## 🚀 Getting Started
+## Quickstart
 
-### Installation
-Install the package via pip:
+### Install
+
 ```bash
 pip install filetransfer
 ```
 
-### Initial Setup
-Generate your identity key pair to begin secure communications:
+### Create an identity
+
 ```bash
 filetransfer init --identity alice
 ```
-Share your public key (`~/.filetransfer/keys/alice_public.ed25519`) with the peer you intend to transfer files to.
 
-### Basic Usage
+`filetransfer` stores the key pair in `~/.filetransfer/keys/`.  
+Share `~/.filetransfer/keys/alice_public.ed25519` with the peer you want to communicate with.
 
-**To receive a file:**
-Run this on the destination machine to listen for incoming transfers.
+### Receive a file
+
 ```bash
-filetransfer receive --port 4242 --output ./downloads/
+filetransfer receive --port 4242 --output ./downloads
 ```
 
-**To send a file:**
+### Send a file
+
 ```bash
 filetransfer send \
-  --file ./document.pdf \
+  --file ./report.pdf \
   --to bob@203.0.113.5:4242 \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-**To resume a stalled transfer:**
-If a connection is interrupted, use the session file to pick up where you left off.
+### Resume a stalled transfer
+
 ```bash
 filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 ```
 
 ---
 
-## ✨ Features
+## Features
 
-- **End-to-End Encryption**: AES-256-GCM for payload encryption and Ed25519 for authentication and integrity.
-- **Flexible Connectivity**: Direct P2P via TCP, with optional WebSocket relay support.
-- **Resumable Transfers**: State is persisted to session files to handle network instability.
-- **Cross-Platform**: Full support for Linux, macOS, Windows, and WSL.
-- **Extensible**: Integrated hooks to execute custom scripts before or after transfers.
-- **Auditability**: Built-in logging for all transfers, accessible via `filetransfer audit`.
-
----
-
-## ⚙️ Command Reference
-
-| Command | Description |
-|---------|-------------|
-| `init`   | Generate or refresh identity key pairs |
-| `send`   | Transfer a file to a remote peer |
-| `receive`| Listen for incoming file transfers |
-| `resume` | Continue an interrupted transfer from a session file |
-| `relay`  | Manage relay nodes (`list`, `add`, `remove`) |
-| `audit`  | Query or generate transfer audit logs |
-
-*For detailed options, run `filetransfer <command> --help`.*
+- **End‑to‑end encryption** – AES‑256‑GCM payload encryption + Ed25519 authentication.
+- **Direct or relay‑based transport** – TCP is used directly, but WebSocket relays are supported for NAT traversal.
+- **Resumable transfers** – Session files allow you to pick up where you left off.
+- **Cross‑platform** – Works on Linux, macOS, Windows, and WSL.
+- **Extensible hooks** – Run custom scripts before or after a transfer.
+- **Audit logs** – `filetransfer audit` gives a complete transfer history.
 
 ---
 
-## 🔧 Advanced Usage
+## Commands
 
-### Optimizing Performance
-Adjust the chunk size for high-bandwidth connections (e.g., 16 MiB):
+| Command | Purpose |
+|---------|---------|
+| `init`   | Generate or refresh an identity key pair. |
+| `send`   | Transfer a file to a remote peer. |
+| `receive`| Listen for incoming file transfers. |
+| `resume` | Continue an interrupted transfer using a session file. |
+| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit`  | Query or generate transfer audit logs. |
+
+Run `filetransfer <command> --help` for detailed options.
+
+---
+
+## Advanced Tips
+
+### Adjust chunk size
+
+For high‑bandwidth links, a larger chunk size speeds transfer:
+
 ```bash
 filetransfer send --chunk-size 16777216 --file report.pdf ...
 ```
 
-### Using a Relay Server
-Bypass firewalls or NATs by using a WebSocket relay:
+### Use a WebSocket relay
+
 ```bash
 filetransfer send \
   --file report.pdf \
@@ -94,57 +96,61 @@ filetransfer send \
   --relay wss://relay.filetransfer.io
 ```
 
-### Custom Audit Logging
-Specify a custom path for the transfer log:
+### Custom audit log path
+
 ```bash
-filetransfer receive --port 4242 --audit-log ~/.filetransfer/audit/2026-08.log
+filetransfer receive \
+  --port 4242 \
+  --audit-log ~/.filetransfer/audit/2026-08.log
 ```
 
 ---
 
-## 📁 Directory Structure
+## Directory layout
 
-The tool maintains its state in the following directory:
+`fileTransfer` stores its data in `~/.filetransfer/`:
+
 ```
 ~/.filetransfer/
-├─ keys/        # Public and private Ed25519 key pairs
-├─ sessions/    # Session files for resuming transfers
-└─ audit/       # Transfer history and audit logs
+├─ keys/        # Public/private Ed25519 key pairs
+├─ sessions/    # Persisted session files
+└─ audit/       # Transfer logs
 ```
 
 ---
 
-## 📝 Changelog
+## Changelog (latest)
 
-### v3.0.0 (2026-09-10)
-- Added encrypted relay connections.
-- Introduced `key` command for seamless key rotation.
-- Overhauled documentation.
+### v3.0.0 (2026‑09‑10)
 
-### v2.1.0 (2026-08-05)
-- Implemented SHA-3-512 for enhanced integrity verification.
-- Added `relay list` command.
-- Increased default chunk size to 8 MiB.
-- Fixed race conditions in multi-peer transfers and Windows Unicode path handling.
+- Encrypted WebSocket relay support.
+- `key` command added for key rotation.
+- Documentation overhaul.
 
-### v2.0.0 (2026-04-12)
-- Completely reimplemented session persistence for transfers.
-- Migrated key handling to the `cryptography` library.
-- Added official support for WSL.
+### v2.1.0 (2026‑08‑05)
 
----
+- SHA‑3‑512 integrity checks.
+- `relay list` command.
+- Default chunk size increased to 8 MiB.
+- Fixed race conditions on Windows and WSL.
 
-## 🤝 Contributing
+### v2.0.0 (2026‑04‑12)
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository and create a feature branch (`feat/...` or `fix/...`).
-2. Ensure code style consistency by running `black .` before committing.
-3. Ensure the test suite passes with `pytest` (minimum 90% coverage required).
-4. Submit a pull request with a clear description and linked issue.
+- Complete session persistence redesign.
+- Migrated key handling to `cryptography`.
+- Official WSL support.
 
 ---
 
-## 📄 License
+## Contributing
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for more details.
+1. Fork the repo and create a feature branch (`feat/...` or `fix/...`).
+2. Run `black .` to keep code style.
+3. Ensure tests pass (`pytest`) – coverage ≥ 90 %.
+4. Open a PR with a clear description and any related issue.
+
+---
+
+## License
+
+MIT – see the bundled [LICENSE](LICENSE).
