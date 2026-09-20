@@ -1,7 +1,7 @@
 # fileTransfer
 
 A lightweight, pure‑Python command‑line tool for secure peer‑to‑peer file transfers over TCP.  
-It supports optional WebSocket relays for NAT traversal and an optional central relay server.
+It offers end‑to‑end encryption, resumable sessions, and optional WebSocket relays for NAT traversal.
 
 ![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)
 ![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)
@@ -25,10 +25,10 @@ pip install filetransfer
 filetransfer init --identity alice
 ```
 
-`filetransfer` stores the key pair in `~/.filetransfer/keys/`.  
-Share `~/.filetransfer/keys/alice_public.ed25519` with the peer you want to communicate with.
+The key pair is stored in `~/.filetransfer/keys/`.  
+Share `~/.filetransfer/keys/alice_public.ed25519` with the peer you want to connect to.
 
-### Receive a file
+### Listen for incoming transfers
 
 ```bash
 filetransfer receive --port 4242 --output ./downloads
@@ -53,35 +53,35 @@ filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 
 ## Features
 
-- **End‑to‑end encryption** – AES‑256‑GCM payload encryption + Ed25519 authentication.
-- **Direct or relay‑based transport** – TCP is used directly, but WebSocket relays are supported for NAT traversal.
-- **Resumable transfers** – Session files allow you to pick up where you left off.
+- **End‑to‑end encryption** – AES‑256‑GCM payload encryption with Ed25519 authentication.
+- **Direct or relay‑based transport** – TCP is used directly; WebSocket relays support NAT traversal.
+- **Resumable transfers** – Session files let you pick up where you left off.
 - **Cross‑platform** – Works on Linux, macOS, Windows, and WSL.
-- **Extensible hooks** – Run custom scripts before or after a transfer.
-- **Audit logs** – `filetransfer audit` gives a complete transfer history.
+- **Extensible hooks** – Execute custom scripts before or after a transfer.
+- **Audit logs** – `filetransfer audit` prints a full transfer history.
 
 ---
 
 ## Commands
 
 | Command | Purpose |
-|---------|---------|
-| `init`   | Generate or refresh an identity key pair. |
-| `send`   | Transfer a file to a remote peer. |
-| `receive`| Listen for incoming file transfers. |
+|--------|---------|
+| `init` | Generate or refresh an identity key pair. |
+| `send` | Transfer a file to a remote peer. |
+| `receive` | Listen for incoming file transfers. |
 | `resume` | Continue an interrupted transfer using a session file. |
-| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit`  | Query or generate transfer audit logs. |
+| `relay` | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit` | Query or generate transfer audit logs. |
 
 Run `filetransfer <command> --help` for detailed options.
 
 ---
 
-## Advanced Tips
+## Advanced usage
 
 ### Adjust chunk size
 
-For high‑bandwidth links, a larger chunk size speeds transfer:
+On high‑bandwidth links, a larger chunk size speeds up transfer:
 
 ```bash
 filetransfer send --chunk-size 16777216 --file report.pdf ...
@@ -108,35 +108,33 @@ filetransfer receive \
 
 ## Directory layout
 
-`fileTransfer` stores its data in `~/.filetransfer/`:
-
-```
+```text
 ~/.filetransfer/
-├─ keys/        # Public/private Ed25519 key pairs
-├─ sessions/    # Persisted session files
-└─ audit/       # Transfer logs
+├── keys/        # Public/private Ed25519 key pairs
+├── sessions/   # Persisted session files
+└── audit/      # Transfer logs
 ```
 
 ---
 
 ## Changelog (latest)
 
-### v3.0.0 (2026‑09‑10)
+### v3.0.0 (2026‑09‑10)
 
 - Encrypted WebSocket relay support.
-- `key` command added for key rotation.
+- Added `key` subcommand for key rotation.
 - Documentation overhaul.
 
-### v2.1.0 (2026‑08‑05)
+### v2.1.0 (2026‑08‑05)
 
 - SHA‑3‑512 integrity checks.
 - `relay list` command.
 - Default chunk size increased to 8 MiB.
 - Fixed race conditions on Windows and WSL.
 
-### v2.0.0 (2026‑04‑12)
+### v2.0.0 (2026‑04‑12)
 
-- Complete session persistence redesign.
+- Session persistence redesign.
 - Migrated key handling to `cryptography`.
 - Official WSL support.
 
@@ -145,8 +143,8 @@ filetransfer receive \
 ## Contributing
 
 1. Fork the repo and create a feature branch (`feat/...` or `fix/...`).
-2. Run `black .` to keep code style.
-3. Ensure tests pass (`pytest`) – coverage ≥ 90 %.
+2. Run `black .` to keep the style consistent.
+3. Ensure tests pass (`pytest`) and coverage ≥ 90 %.
 4. Open a PR with a clear description and any related issue.
 
 ---
