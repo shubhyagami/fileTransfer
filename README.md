@@ -1,40 +1,53 @@
 # fileTransfer
 
-A lightweight, pure‑Python command‑line tool for secure peer‑to‑peer file transfers over TCP.  
-It offers end‑to‑end encryption, resumable sessions, and optional WebSocket relays for NAT traversal.
+Secure, lightweight, pure‑Python peer‑to‑peer file transfer.
+
+---
+
+## 📦 Badges
 
 ![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)
 ![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
-![CI Status](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)
-![Coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)
+![CI status](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)
+![Code coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)
 
 ---
 
-## Quickstart
+## 📄 Overview
 
-### Install
+`fileTransfer` is a command‑line tool that lets you send and receive files directly between two machines over a TCP connection.  
+All data is end‑to‑end encrypted with AES‑256‑GCM and authenticated with Ed25519.  
+The tool also supports resumable sessions, optional WebSocket relays for NAT traversal, and audit logging.
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Install
 
 ```bash
 pip install filetransfer
 ```
 
-### Create an identity
+### 2️⃣ Create an identity
 
 ```bash
 filetransfer init --identity alice
 ```
 
-The key pair is stored in `~/.filetransfer/keys/`.  
-Share `~/.filetransfer/keys/alice_public.ed25519` with the peer you want to connect to.
+Your key pair is stored in `~/.filetransfer/keys/`.  
+Share `~/.filetransfer/keys/alice_public.ed25519` with the person you want to talk to.
 
-### Listen for incoming transfers
+### 3️⃣ Listen for incoming transfers
 
 ```bash
 filetransfer receive --port 4242 --output ./downloads
 ```
 
-### Send a file
+The command now blocks until a transfer completes. Press `Ctrl‑C` to stop listening.
+
+### 4️⃣ Send a file
 
 ```bash
 filetransfer send \
@@ -43,7 +56,7 @@ filetransfer send \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-### Resume a stalled transfer
+### 5️⃣ Resume a stalled transfer
 
 ```bash
 filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
@@ -51,43 +64,46 @@ filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 
 ---
 
-## Features
+## ✨ Features
 
-- **End‑to‑end encryption** – AES‑256‑GCM payload encryption with Ed25519 authentication.
-- **Direct or relay‑based transport** – TCP is used directly; WebSocket relays support NAT traversal.
-- **Resumable transfers** – Session files let you pick up where you left off.
-- **Cross‑platform** – Works on Linux, macOS, Windows, and WSL.
-- **Extensible hooks** – Execute custom scripts before or after a transfer.
-- **Audit logs** – `filetransfer audit` prints a full transfer history.
+| Feature | What it does |
+|---------|--------------|
+| **End‑to‑end encryption** | AES‑256‑GCM payload encryption + Ed25519 authentication |
+| **Direct or relay transport** | Plain TCP by default; optional WebSocket relay for NAT traversal |
+| **Resumable sessions** | Persisted session files let you continue interrupted transfers |
+| **Cross‑platform** | Works on Linux, macOS, Windows, and WSL |
+| **Extensible hooks** | Run custom scripts before or after a transfer |
+| **Audit logging** | `filetransfer audit` prints a chronological transfer history |
+| **High‑bandwidth tuning** | Adjust chunk size for optimal throughput |
 
 ---
 
-## Commands
+## 📑 Commands
 
 | Command | Purpose |
-|--------|---------|
-| `init` | Generate or refresh an identity key pair. |
-| `send` | Transfer a file to a remote peer. |
-| `receive` | Listen for incoming file transfers. |
-| `resume` | Continue an interrupted transfer using a session file. |
-| `relay` | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit` | Query or generate transfer audit logs. |
+|---------|---------|
+| `init` | Generate or refresh an identity key pair |
+| `send` | Transfer a file to a remote peer |
+| `receive` | Listen for incoming file transfers |
+| `resume` | Continue an interrupted transfer using a session file |
+| `relay` | Manage relay nodes (`list`, `add`, `remove`) |
+| `audit` | Query or generate transfer audit logs |
 
-Run `filetransfer <command> --help` for detailed options.
+Run `filetransfer <command> --help` for full options.
 
 ---
 
-## Advanced usage
+## ⚙️ Advanced usage
 
-### Adjust chunk size
+### Chunk size
 
-On high‑bandwidth links, a larger chunk size speeds up transfer:
+Increase the size on fast links:
 
 ```bash
 filetransfer send --chunk-size 16777216 --file report.pdf ...
 ```
 
-### Use a WebSocket relay
+### WebSocket relay
 
 ```bash
 filetransfer send \
@@ -106,7 +122,7 @@ filetransfer receive \
 
 ---
 
-## Directory layout
+## 📁 Directory layout
 
 ```text
 ~/.filetransfer/
@@ -117,38 +133,32 @@ filetransfer receive \
 
 ---
 
-## Changelog (latest)
+## 🔧 Changelog
 
 ### v3.0.0 (2026‑09‑10)
 
-- Encrypted WebSocket relay support.
-- Added `key` subcommand for key rotation.
-- Documentation overhaul.
+- Added WebSocket relay support
+- New `key` subcommand for key rotation
+- Documentation overhaul
 
 ### v2.1.0 (2026‑08‑05)
 
-- SHA‑3‑512 integrity checks.
-- `relay list` command.
-- Default chunk size increased to 8 MiB.
-- Fixed race conditions on Windows and WSL.
-
-### v2.0.0 (2026‑04‑12)
-
-- Session persistence redesign.
-- Migrated key handling to `cryptography`.
-- Official WSL support.
+- SHA‑3‑512 integrity checks
+- `relay list` introduced
+- Default chunk size increased to 8 MiB
+- Fixed Windows/WSL race conditions
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repo and create a feature branch (`feat/...` or `fix/...`).
-2. Run `black .` to keep the style consistent.
-3. Ensure tests pass (`pytest`) and coverage ≥ 90 %.
-4. Open a PR with a clear description and any related issue.
+1. Fork the repo, create a feature branch (`feat/...` or `fix/...`).
+2. Format the code with `black .`.
+3. Run tests (`pytest`) and ensure coverage ≥ 90 %.
+4. Submit a PR with a clear title and description.
 
 ---
 
-## License
+## 📜 License
 
 MIT – see the bundled [LICENSE](LICENSE).
