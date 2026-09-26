@@ -1,89 +1,87 @@
-[K[2m  [2mmodel deepseek-ai/deepseek-v4.1-flash failed, trying next...[0m[0m
+[K[2m  [2mmodel z-ai/glm-5.3-flash failed, trying next...[0m[0m
 # fileTransfer
 
-Secure, lightweight, pure‑Python peer‑to‑peer file transfer.
+Secure, lightweight, pure-Python peer-to-peer file transfer.
 
----
+[![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
+[![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)](https://pypi.org/project/filetransfer/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![CI](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml)
+[![Coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)](https://codecov.io/gh/shubhyagami/fileTransfer)
 
-## 📦 Badges
+## Overview
 
-![PyPI version](https://img.shields.io/pypi/v/filetransfer?style=flat-square)  
-![Python versions](https://img.shields.io/pypi/pyversions/filetransfer?style=flat-square)  
-![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)  
-![CI](https://github.com/shubhyagami/fileTransfer/actions/workflows/ci.yml/badge.svg?branch=main&style=flat-square)  
-![Coverage](https://img.shields.io/codecov/c/gh/shubhyagami/fileTransfer/main?label=coverage&style=flat-square)
-
----
-
-## 📄 Overview
-
-`fileTransfer` is a command‑line tool that lets you **send and receive files directly over a TCP connection**.  
-All traffic is end‑to‑end encrypted with **AES‑256‑GCM** and authenticated with **Ed25519**.  
+`fileTransfer` is a command-line tool for sending and receiving files directly over TCP. All traffic is end-to-end encrypted with AES-256-GCM and authenticated with Ed25519.
 
 Key features:
 
-- **Direct or relay transport** – plain TCP by default, or a WebSocket relay for NAT traversal.  
-- **Resumable sessions** – interrupted transfers can be restarted from where they left off.  
-- **Audit logging** – a chronological record of all transfers is kept automatically.  
-- **Cross‑platform** – works on Linux, macOS, Windows (including WSL), and any Python 3.8+ interpreter.  
+- Direct or relayed transport: plain TCP by default, or a WebSocket relay for NAT traversal.
+- Resumable sessions: interrupted transfers can be restarted from where they left off.
+- Audit logging: a chronological record of all transfers is kept automatically.
+- Cross-platform: Linux, macOS, Windows (including WSL), and any Python 3.8+ interpreter.
 
----
+## Getting started
 
-## 🚀 Quick start
+Install the package:
 
 ```bash
-# Install the package
 pip install filetransfer
+```
 
-# Create your identity key pair
+Create your identity key pair:
+
+```bash
 filetransfer init --identity alice
+```
 
-# Listen for incoming transfers (replace with your own port if needed)
+Listen for incoming transfers:
+
+```bash
 filetransfer receive --port 4242 --output ./downloads
+```
 
-# Send a file to a remote peer
+Send a file to a remote peer:
+
+```bash
 filetransfer send \
   --file ./report.pdf \
   --to bob@203.0.113.5:4242 \
   --key ~/.filetransfer/keys/bob_public.ed25519
 ```
 
-> **Tip** – To resume a stalled transfer, run  
-> `filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession`
+To resume a stalled transfer, run:
 
----
+```bash
+filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
+```
 
-## ✨ Features
+## Features
 
-- **End‑to‑end encryption** – payloads are encrypted with AES‑256‑GCM; traffic is authenticated with Ed25519 signatures.  
-- **Direct & relayed transport** – fallback to a WebSocket relay for peers behind NAT.  
-- **Resumable sessions** – session files are persisted in `~/.filetransfer/sessions/`.  
-- **Audit trail** – transfer logs are stored under `~/.filetransfer/audit/`.  
-- **Extensible hooks** – run custom scripts before or after any transfer.  
-- **Adjustable chunk size** – tweak bandwidth on high‑speed links.  
+- End-to-end encryption: payloads are encrypted with AES-256-GCM; traffic is authenticated with Ed25519 signatures.
+- Direct and relayed transport: fall back to a WebSocket relay for peers behind NAT.
+- Resumable sessions: session files are persisted in `~/.filetransfer/sessions/`.
+- Audit trail: transfer logs are stored under `~/.filetransfer/audit/`.
+- Extensible hooks: run custom scripts before or after any transfer.
+- Adjustable chunk size: tune bandwidth on high-speed links.
 
----
-
-## 📑 Commands
+## Commands
 
 | Command | Purpose |
 |---------|---------|
-| `init`   | Generate or refresh an identity key pair. |
-| `send`   | Transfer a file to a remote peer. |
+| `init` | Generate or refresh an identity key pair. |
+| `send` | Transfer a file to a remote peer. |
 | `receive` | Listen for incoming file transfers. |
 | `resume` | Continue an interrupted transfer using a session file. |
-| `relay`  | Manage relay nodes (`list`, `add`, `remove`). |
-| `audit`  | Query or generate transfer audit logs. |
+| `relay` | Manage relay nodes (`list`, `add`, `remove`). |
+| `audit` | Query or generate transfer audit logs. |
 
 Run `filetransfer <command> --help` for full options.
 
----
-
-## ⚙️ Advanced usage
+## Advanced usage
 
 ### Chunk size
 
-On very fast links, increase the size to boost throughput:
+On very fast links, increase the chunk size to boost throughput:
 
 ```bash
 filetransfer send --file report.pdf --chunk-size 16777216 ...
@@ -106,9 +104,7 @@ filetransfer receive \
   --audit-log ~/.filetransfer/audit/2026-08.log
 ```
 
----
-
-## 📁 Configuration layout
+## Configuration layout
 
 ```text
 ~/.filetransfer/
@@ -117,42 +113,34 @@ filetransfer receive \
 └── audit/       # Transfer logs
 ```
 
----
+## Development
 
-## 🔧 Development
-
-- Supported Python: 3.8 – 3.13  
-- Run the test suite: `pytest`  
+- Supported Python: 3.8 - 3.13
+- Run the test suite: `pytest`
 - Code formatting: `black .`
 
----
+## Changelog
 
-## 🔔 Changelog
+### v3.0.0 (2026-09-10)
 
-### v3.0.0 (2026‑09‑10)
-
-- Added WebSocket relay support.  
-- Introduced `key` subcommand for key rotation.  
+- Added WebSocket relay support.
+- Introduced `key` subcommand for key rotation.
 - Updated documentation and examples.
 
-### v2.1.0 (2026‑08‑05)
+### v2.1.0 (2026-08-05)
 
-- SHA‑3‑512 integrity checks.  
-- New `relay list` command.  
-- Default chunk size increased to 8 MiB.  
+- Added SHA-3-512 integrity checks.
+- Added `relay list` command.
+- Increased default chunk size to 8 MiB.
 - Fixed race conditions on Windows/WSL.
 
----
+## Contributing
 
-## 🤝 Contributing
-
-1. Fork the repository and create a feature branch (`feat/...` or `fix/...`).  
-2. Format the code with `black .`.  
-3. Run tests (`pytest`) and ensure coverage ≥ 90 %.  
+1. Fork the repository and create a feature branch (`feat/...` or `fix/...`).
+2. Format the code with `black .`.
+3. Run tests (`pytest`) and ensure coverage is at least 90%.
 4. Submit a pull request with a descriptive title and explanation.
 
----
+## License
 
-## 📜 License
-
-MIT – see the bundled [LICENSE](LICENSE).
+MIT - see the bundled [LICENSE](LICENSE).
