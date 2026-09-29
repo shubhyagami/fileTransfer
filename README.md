@@ -14,30 +14,30 @@ Secure, lightweight, pure‑Python peer‑to‑peer file transfer.
 
 ## Overview
 
-`fileTransfer` is a command‑line tool that sends and receives files over raw TCP with optional WebSocket relaying for NAT traversal. All traffic is end‑to‑end encrypted with AES‑256‑GCM and authenticated with Ed25519 signatures.
+`fileTransfer` is a command‑line utility that moves files over raw TCP with optional WebSocket relaying for NAT traversal. All traffic is end‑to‑end encrypted with AES‑256‑GCM and authenticated with Ed25519 signatures.
 
 ### Key features
 
-- **Secure** – AES‑256‑GCM encryption + Ed25519 signatures
-- **Resumable** – interrupted transfers can be continued from where they stopped
-- **Audit trail** – chronological logs are kept automatically
-- **Cross‑platform** – works on Linux, macOS, Windows (including WSL) with any Python 3.8+ interpreter
-- **Pluggable hooks** – run custom scripts before and after transfers
-- **WebSocket relay** – fallback transport for peers behind NAT
-- **Adjustable chunk size** – tune throughput on high‑speed links
+- **Secure** – AES‑256‑GCM encryption + Ed25519 signatures  
+- **Resumable** – interrupted transfers can be continued from where they stopped  
+- **Audit trail** – chronological logs are kept automatically  
+- **Cross‑platform** – works on Linux, macOS, Windows (including WSL) with any Python 3.8+ interpreter  
+- **Pluggable hooks** – run custom scripts before and after transfers  
+- **WebSocket relay** – fallback transport for peers behind NAT  
+- **Adjustable chunk size** – tune throughput on high‑speed links  
 
 ---
 
-## Quick start
+## Getting Started
 
 ```bash
-# Install
+# Install from PyPI
 pip install filetransfer
 
-# Create your identity keys
+# Generate your identity keys
 filetransfer init --identity alice
 
-# Start listening for incoming files
+# Listen for incoming files
 filetransfer receive --port 4242 --output ./downloads
 
 # Send a file to a remote peer
@@ -50,21 +50,21 @@ filetransfer send \
 filetransfer resume --session ~/.filetransfer/sessions/<id>.ftsession
 ```
 
-Run `filetransfer <command> --help` to see all options for a command.
+Run `filetransfer <command> --help` to see the full list of options for a command.
 
 ---
 
 ## Commands
 
-| Command | What it does |
-|---------|--------------|
+| Command | Description |
+|---------|-------------|
 | `init`  | Generate or refresh an Ed25519 identity key pair |
 | `send`  | Transfer a file to a remote peer |
 | `receive` | Listen for incoming file transfers |
 | `resume` | Continue a stalled transfer using a session file |
 | `relay` | Manage WebSocket relay nodes (`list`, `add`, `remove`) |
 | `audit` | Query or generate transfer audit logs |
-| `hook`  | Register or list custom pre/post‑transfer scripts |
+| `hook`  | Register or list custom pre‑/post‑transfer scripts |
 
 ---
 
@@ -72,7 +72,7 @@ Run `filetransfer <command> --help` to see all options for a command.
 
 ### Chunk size
 
-On fast links, increase the chunk size for better throughput:
+On high‑speed links increase the chunk size for better throughput:
 
 ```bash
 filetransfer send --file report.pdf --chunk-size 16777216 ...
@@ -103,7 +103,7 @@ filetransfer receive \
 ~/.filetransfer/
 ├── keys/        # Public/private Ed25519 key pairs
 ├── sessions/    # Persisted session files for resumable transfers
-└── audit/       # Transfer logs
+└── audit/        # Transfer logs
 ```
 
 ---
@@ -125,18 +125,18 @@ black .
 
 ## Changelog
 
-### v3.1.0 (2026‑09‑28)
+### v3.1.0 – 2026‑09‑28
 
 - Minor bug fixes in session resumption
 - Updated documentation examples
 
-### v3.0.0 (2026‑09‑10)
+### v3.0.0 – 2026‑09‑10
 
 - Added WebSocket relay support
-- Introduced `relay` subcommand
+- Introduced `relay` sub‑command
 - Updated encryption defaults
 
-### v2.1.0 (2026‑08‑05)
+### v2.1.0 – 2026‑08‑05
 
 - Added SHA‑3‑512 integrity checks
 - Added `relay list` command
@@ -147,7 +147,7 @@ black .
 
 ## Contributing
 
-1. Fork the repo and create a feature branch (e.g., `feat/…` or `fix/…`).
+1. Fork the repo and create a feature branch (e.g., `feat/...` or `fix/...`).
 2. Format the code with `black .`.
 3. Run tests with `pytest` and ensure coverage ≥ 90 %.
 4. Submit a pull request with a descriptive title and explanation.
